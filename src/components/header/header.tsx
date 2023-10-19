@@ -11,9 +11,10 @@ const Header = () => {
     <>
       <header className='flex h-14 flex-row items-center'>
         <div className='flex flex-1 items-center gap-2'>
-          <SideMenuMobile />
+          {/*<SideMenuMobile />*/}
           <span className='hidden font-bold md:flex'>Quizzzy</span>
         </div>
+
         {currentQuizIndex < quizzes.length && (
           <span className='hidden flex-1 justify-center md:flex'>
             {currentQuizIndex}/{quizzes.length}
@@ -22,10 +23,10 @@ const Header = () => {
 
         <div className='flex flex-1 flex-row items-center justify-end gap-4'>
           <ThemeButton />
-          <Avatar>
-            <AvatarImage src='https://github.com/shadcn.png' />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          {/*<Avatar>*/}
+          {/*  <AvatarImage src='https://github.com/shadcn.png' />*/}
+          {/*  <AvatarFallback>CN</AvatarFallback>*/}
+          {/*</Avatar>*/}
         </div>
       </header>
     </>

@@ -60,8 +60,12 @@ const Prompts = () => {
           </Button>
         ))}
 
-        <div className='mt-5 flex flex-row justify-between'>
-          <Button disabled={isLoading || currentQuizIndex === 0} onClick={handleNavigateBackward}>
+        <div className={cn('mt-5 flex flex-row justify-between', { 'justify-end': currentQuizIndex === 0 })}>
+          <Button
+            disabled={isLoading || currentQuizIndex === 0}
+            onClick={handleNavigateBackward}
+            className={cn({ hidden: currentQuizIndex === 0 })}
+          >
             Previous
           </Button>
 

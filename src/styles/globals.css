@@ -1,6 +1,13 @@
+@import '@radix-ui/colors/green.css';
+@import '@radix-ui/colors/red.css';
+@import '@radix-ui/colors/green-dark.css';
+@import '@radix-ui/colors/red-dark.css';
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 .convert {
     color: hsl(152, 57%, 38%)
@@ -29,12 +36,11 @@
         --accent: 240 4.8% 95.9%;
         --accent-foreground: 240 5.9% 10%;
 
-        --success: 144, 41%, 77%;
+        --success: var(--green-5);
+        --tc-success: var(--green-9);
 
-        --attention: 56, 100%, 86%;
-
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 0 0% 98%;
+        --destructive: var(--red-5);
+        --tc-destructive: var(--red-9);
 
         --border: 240 5.9% 90%;
         --input: 240 5.9% 90%;
@@ -65,12 +71,11 @@
         --accent: 240 3.7% 15.9%;
         --accent-foreground: 0 0% 98%;
 
-        --success: 152, 41%, 13%;
+        --success: var(--green-5);
+        --tc-success: var(--green-9);
 
-        --attention: 0 62.8% 30.6%;
-
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 0 0% 98%;
+        --destructive: var(--red-5);
+        --tc-destructive: var(--red-9);
 
         --border: 240 3.7% 15.9%;
         --input: 240 3.7% 15.9%;

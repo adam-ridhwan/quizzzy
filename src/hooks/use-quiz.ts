@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
 import { QUIZZES } from '@/constants/development';
 import { atom, useAtom } from 'jotai';
-import { useEffectOnce } from 'usehooks-ts';
 
 import { QuizzesWithSelectedAnswers } from '@/types/quiz-types';
+import { delay } from '@/lib/utils';
 
 const scoreAtom = atom(0);
 const quizzesAtom = atom<QuizzesWithSelectedAnswers[]>(
@@ -82,10 +81,10 @@ const useQuiz = () => {
   const handleSubmit = async () => {
     setIsLoading(true);
 
-    // await delay(2000);
+    await delay(2000);
 
     let score = 0;
-    quizzes.forEach((quiz, index) => {
+    quizzes.forEach(quiz => {
       const selectedAnswers = quiz.selectedAnswers ?? [];
       const correctAnswers = quiz.correctAnswers ?? [];
 

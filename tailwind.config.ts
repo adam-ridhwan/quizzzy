@@ -36,14 +36,16 @@ module.exports = {
           foreground: 'hsl(var(--secondary-foreground))',
         },
         success: {
-          DEFAULT: 'hsl(var(--success))',
+          DEFAULT: 'var(--success)',
         },
-        attention: {
-          DEFAULT: 'hsl(var(--attention))',
+        'tc-success': {
+          DEFAULT: 'var(--tc-success)',
         },
         destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
+          DEFAULT: 'var(--destructive)',
+        },
+        'tc-destructive': {
+          DEFAULT: 'var(--tc-destructive)',
         },
         muted: {
           DEFAULT: 'hsl(var(--muted))',
