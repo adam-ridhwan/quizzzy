@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import { green, red, yellow } from '@radix-ui/colors';
+
 module.exports = {
   darkMode: ['class'],
   content: [
@@ -12,11 +14,14 @@ module.exports = {
       center: true,
       padding: '1rem',
       screens: {
-        '2xl': '768px',
+        '2xl': '1024px',
       },
     },
     extend: {
       colors: {
+        ...red,
+        ...green,
+        ...yellow,
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -29,6 +34,12 @@ module.exports = {
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',
+        },
+        success: {
+          DEFAULT: 'hsl(var(--success))',
+        },
+        attention: {
+          DEFAULT: 'hsl(var(--attention))',
         },
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',

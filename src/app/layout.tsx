@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google';
 import JotaiProvider from '@/providers/jotai-provider';
 import ThemeProvider from '@/providers/theme-provider';
 
-import Header from '@/components/header';
+import Header from '@/components/header/header';
 
 import '../styles/globals.css';
 
@@ -12,17 +12,19 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Quizzzy',
-  description: 'Quiz site for Quizzzy',
+  description: 'QuizTypes site for Quizzzy',
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang='en'>
-      <body className={`${inter.className} container`}>
+      <body className={`${inter.className} `}>
         <JotaiProvider>
           <ThemeProvider>
-            <Header />
-            {children}
+            <div className='container'>
+              <Header />
+              {children}
+            </div>
           </ThemeProvider>
         </JotaiProvider>
       </body>

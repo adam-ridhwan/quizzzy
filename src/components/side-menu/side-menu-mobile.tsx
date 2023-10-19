@@ -4,6 +4,7 @@ import {
   SheetContent,
   SheetDescription,
   SheetHeader,
+  SheetPortal,
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
@@ -31,15 +32,13 @@ const SideMenuMobile = () => {
           </Button>
         </SheetTrigger>
 
-        <SheetContent side='left' className='pt-16'>
-          <SheetHeader>
+        <SheetPortal>
+          <SheetContent side='left' className='pt-16'>
             <H2 className='mb-8'>Quizzy</H2>
 
             <H1>This is a question?</H1>
-
-            <SheetDescription></SheetDescription>
-          </SheetHeader>
-        </SheetContent>
+          </SheetContent>
+        </SheetPortal>
       </Sheet>
     </>
   );
