@@ -81,6 +81,16 @@ const Prompt = () => {
           <div className='flex flex-1 items-center'>
             <H2>{question}</H2>
           </div>
+
+          <div className={cn('flex justify-end gap-4')}>
+            <button disabled={isLoading || isFirstQuestion} onClick={handleNavigateBackward}>
+              <ArrowSquareLeft className={cn(`h-9 w-9`, { 'fill-muted-foreground': isFirstQuestion })} />
+            </button>
+
+            <button disabled={isLoading || isLastQuestion} onClick={handleNavigateForward}>
+              <ArrowSquareRight className={cn(`h-9 w-9`, { 'fill-muted-foreground': isLastQuestion })} />
+            </button>
+          </div>
         </Card>
 
         <div className='flex flex-col gap-4'>
@@ -99,21 +109,11 @@ const Prompt = () => {
           ))}
         </div>
 
-        <div className='flex justify-between'>
-          <div className={cn('flex  gap-4')}>
-            <button disabled={isLoading || isFirstQuestion} onClick={handleNavigateBackward}>
-              <ArrowSquareLeft className={cn(`h-9 w-9`, { 'fill-muted-foreground': isFirstQuestion })} />
-            </button>
-
-            <button disabled={isLoading || isLastQuestion} onClick={handleNavigateForward}>
-              <ArrowSquareRight className={cn(`h-9 w-9`, { 'fill-muted-foreground': isLastQuestion })} />
-            </button>
-          </div>
-
+        <div className='h-9'>
           <Button
             disabled={!isQuizFinished}
             onClick={handleSubmit}
-            className={cn({ hidden: !isQuizFinished })}
+            className={cn('w-full', { hidden: !isQuizFinished })}
           >
             {isLoading ? <LoadingSpinner /> : 'Submit'}
           </Button>
