@@ -37,6 +37,10 @@ const Results = () => {
 
     // multiple response
     if (correctAnswers.length > 1) {
+      if (correctAnswersCount === 0) {
+        return renderEvaluation(WRONG_ANSWER, 'Wrong answers.');
+      }
+
       if (correctAnswersCount < correctAnswers.length) {
         return renderEvaluation(
           WRONG_ANSWER,
