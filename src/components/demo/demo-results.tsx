@@ -22,7 +22,7 @@ const WRONG_ANSWER = false;
 
 type Evaluation = typeof CORRECT_ANSWER | typeof WRONG_ANSWER;
 
-const Results = () => {
+const DemoResults = () => {
   const { quizzes, score, handleReset } = useQuiz();
 
   const checkAnswers = (correctAnswers: Choices, selectedAnswers: Choices) => {
@@ -138,4 +138,4 @@ const Results = () => {
   );
 };
 
-export default Results;
+export default DemoResults;

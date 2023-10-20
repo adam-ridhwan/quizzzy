@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useEffectOnce } from 'usehooks-ts';
 
 import { Choices, CorrectAnswer, Question } from '@/types/quiz-types';
 import { cn } from '@/lib/utils';
@@ -12,7 +13,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -26,11 +26,9 @@ import LoadingSpinner from '@/components/ui/icons/spinner';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectTrigger } from '@/components/ui/select';
-import H1 from '@/components/ui/typography/h1';
 import H2 from '@/components/ui/typography/h2';
-import H4 from '@/components/ui/typography/h4';
 
-const Prompt = () => {
+const DemoPrompt = () => {
   const {
     quizzes,
     currentQuizIndex,
@@ -41,6 +39,7 @@ const Prompt = () => {
     handleNavigateForward,
     handleSelect,
     handleSubmit,
+    handleReset,
   } = useQuiz();
 
   let question: Question = '';
@@ -60,13 +59,11 @@ const Prompt = () => {
     ({ question, correctAnswers, choices, selectedAnswers } = quizzes[currentQuizIndex]);
   }
 
-  const handleJumpToQuestion = (index: number) => () => {
-    setCurrentQuizIndex(index);
-  };
+  const handleJumpToQuestion = (index: number) => () => setCurrentQuizIndex(index);
 
-  const handleConfirmSubmission = () => {
-    setIsDialogOpen(true);
-  };
+  const handleConfirmSubmission = () => setIsDialogOpen(true);
+
+  useEffectOnce(() => handleReset());
 
   return (
     <>
@@ -171,4 +168,4 @@ const Prompt = () => {
   );
 };
 
-export default Prompt;
+export default DemoPrompt;

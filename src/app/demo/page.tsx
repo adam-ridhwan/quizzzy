@@ -1,11 +1,5 @@
-import QuizPractice from '@/components/quiz/quiz-practice';
+import DemoPractice from '@/components/demo/demo-practice';
 
-const DemoPage = () => {
-  return (
-    <>
-      <QuizPractice />
-    </>
-  );
-};
+const DemoPage = () => <DemoPractice />;
 
 export default DemoPage;

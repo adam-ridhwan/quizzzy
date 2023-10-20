@@ -3,7 +3,7 @@ import Link from 'next/link';
 import CheckboxGrid from '@/components/ui/icons/checkbox-grid';
 import H1 from '@/components/ui/typography/h1';
 import H3 from '@/components/ui/typography/h3';
-import Quiz from '@/components/quiz/quiz';
+import Quiz from '@/components/demo/demo-practice';
 
 export default function Home() {
   return (
