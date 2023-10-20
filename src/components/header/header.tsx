@@ -15,12 +15,6 @@ const Header = () => {
           <span className='font-bold'>Quizzzy</span>
         </div>
 
-        {currentQuizIndex < quizzes.length && (
-          <span className='hidden flex-1 justify-center md:flex'>
-            {currentQuizIndex}/{quizzes.length}
-          </span>
-        )}
-
         <div className='flex flex-1 flex-row items-center justify-end gap-4'>
           <ThemeButton />
           {/*<Avatar>*/}

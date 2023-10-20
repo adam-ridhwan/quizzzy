@@ -9,9 +9,9 @@ const Quiz = () => {
 
   return (
     <>
-      <div className='mb-20 flex w-full max-w-lg flex-col gap-4 pt-10 '>
-        {currentQuizIndex >= quizzes.length ? <Results /> : <Prompt />}
-      </div>
+      {/*<div className='mb-20 flex w-full max-w-lg flex-col gap-4 pt-10 '>*/}
+      {currentQuizIndex >= quizzes.length ? <Results /> : <Prompt />}
+      {/*</div>*/}
     </>
   );
 };

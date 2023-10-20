@@ -68,69 +68,71 @@ const Results = () => {
 
   return (
     <>
-      <Card>
-        <CardHeader>
-          <H1>Quiz complete!</H1>
-          <H3 className='font-medium text-muted-foreground'>
-            {`You answered ${score} out of ${quizzes.length} correct`}
-          </H3>
-        </CardHeader>
+      <div className='mb-20 flex w-full max-w-lg flex-col gap-4 pt-10 '>
+        <Card>
+          <CardHeader>
+            <H1>Quiz complete!</H1>
+            <H3 className='font-medium text-muted-foreground'>
+              {`You answered ${score} out of ${quizzes.length} correct`}
+            </H3>
+          </CardHeader>
 
-        <CardContent className='flex justify-center'>
-          <div className='flex aspect-square w-32 items-center justify-center rounded-lg border-4 border-border'>
-            <span className='text-4xl'>{Math.floor((score / quizzes.length) * 100)}%</span>
-          </div>
-        </CardContent>
+          <CardContent className='flex justify-center'>
+            <div className='flex aspect-square w-32 items-center justify-center rounded-lg border-4 border-border'>
+              <span className='text-4xl'>{Math.floor((score / quizzes.length) * 100)}%</span>
+            </div>
+          </CardContent>
 
-        <CardFooter className='flex justify-end'>
-          <Button onClick={handleReset} className='flex flex-row gap-1 text-primary-foreground'>
-            <ArrowCircle />
-            <span>Try again</span>
-          </Button>
-        </CardFooter>
-      </Card>
+          <CardFooter className='flex justify-end'>
+            <Button onClick={handleReset} className='flex flex-row gap-1 text-primary-foreground'>
+              <ArrowCircle />
+              <span>Try again</span>
+            </Button>
+          </CardFooter>
+        </Card>
 
-      <div className='flex flex-col gap-4'>
-        {quizzes.map(quiz => {
-          const { question, correctAnswers, choices } = quiz;
-          const selectedAnswers = quiz.selectedAnswers ?? [];
+        <div className='flex flex-col gap-4'>
+          {quizzes.map(quiz => {
+            const { question, correctAnswers, choices } = quiz;
+            const selectedAnswers = quiz.selectedAnswers ?? [];
 
-          return (
-            <Fragment key={quiz._id}>
-              <Separator className='my-8' />
+            return (
+              <Fragment key={quiz._id}>
+                <Separator className='my-8' />
 
-              <div className='flex flex-col gap-4'>
-                <Badge variant='outline' className='w-max'>
-                  {correctAnswers.length > 1 ? 'Multiple response' : 'Single response'}
-                </Badge>
+                <div className='flex flex-col gap-4'>
+                  <Badge variant='outline' className='w-max'>
+                    {correctAnswers.length > 1 ? 'Multiple response' : 'Single response'}
+                  </Badge>
 
-                <H2>{question}</H2>
+                  <H2>{question}</H2>
 
-                {checkAnswers(correctAnswers, selectedAnswers)}
+                  {checkAnswers(correctAnswers, selectedAnswers)}
 
-                {choices.map(choice => {
-                  const isSelected = selectedAnswers.includes(choice);
-                  const isCorrect = correctAnswers.includes(choice);
+                  {choices.map(choice => {
+                    const isSelected = selectedAnswers.includes(choice);
+                    const isCorrect = correctAnswers.includes(choice);
 
-                  return (
-                    <div
-                      key={choice}
-                      className={cn(
-                        `inline-flex h-9 items-center justify-center gap-2 rounded-md bg-secondary px-4 
-                        py-2 text-sm font-medium text-secondary-foreground shadow-sm`,
-                        { 'bg-success': isSelected && isCorrect },
-                        { 'bg-destructive': isSelected && !isCorrect }
-                      )}
-                    >
-                      {selectedAnswers.includes(choice) ? <CheckboxChecked /> : <CheckboxEmpty />}
-                      <span className='w-full text-left'>{choice}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </Fragment>
-          );
-        })}
+                    return (
+                      <div
+                        key={choice}
+                        className={cn(
+                          `inline-flex h-9 items-center justify-center gap-2 rounded-md bg-secondary px-4 
+                           py-2 text-sm font-medium text-secondary-foreground shadow-sm`,
+                          { 'bg-success': isSelected && isCorrect },
+                          { 'bg-destructive': isSelected && !isCorrect }
+                        )}
+                      >
+                        {selectedAnswers.includes(choice) ? <CheckboxChecked /> : <CheckboxEmpty />}
+                        <span className='w-full text-left'>{choice}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </Fragment>
+            );
+          })}
+        </div>
       </div>
     </>
   );
