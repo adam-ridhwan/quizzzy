@@ -26,7 +26,9 @@ import LoadingSpinner from '@/components/ui/icons/spinner';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectTrigger } from '@/components/ui/select';
+import H1 from '@/components/ui/typography/h1';
 import H2 from '@/components/ui/typography/h2';
+import H4 from '@/components/ui/typography/h4';
 
 const Prompt = () => {
   const {
@@ -155,7 +157,7 @@ const Prompt = () => {
           ))}
         </div>
 
-        <div className='h-9'>
+        <div className='mt-4 h-9'>
           <Button
             disabled={isLoading || !isQuizFinished}
             onClick={handleConfirmSubmission}

@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 
 type Props = {
   children: string;
-  className: string;
+  className?: string;
 };
 
 const H3 = ({ children, className }: Props) => {

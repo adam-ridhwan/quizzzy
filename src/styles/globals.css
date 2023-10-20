@@ -92,3 +92,7 @@
         @apply bg-background text-foreground;
     }
 }
+
+.text-balance {
+    text-wrap: balance;
+}

@@ -8,7 +8,7 @@ const scoreAtom = atom(0);
 const quizzesAtom = atom<QuizzesWithSelectedAnswers[]>(
   QUIZZES.map(quiz => ({ ...quiz, selectedAnswers: [] }))
 );
-const currentQuizAtom = atom(0); // TODO: switch to id
+const currentQuizAtom = atom(0);
 const loadingAtom = atom(false);
 
 const useQuiz = () => {
