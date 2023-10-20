@@ -99,7 +99,7 @@ const Prompt = () => {
               key={choice}
               variant='secondary'
               onClick={() => handleSelect(choice)}
-              className={cn(`h-12 gap-2`, {
+              className={cn(`h-12 gap-2 md:h-20`, {
                 'ring-offset ring-2 ring-primary/30': selectedAnswers?.includes(choice),
               })}
             >
