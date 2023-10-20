@@ -37,7 +37,7 @@ const Prompt = () => {
   const currentQuestion = quizzes[currentQuizIndex];
   const isFirstQuestion = currentQuizIndex === 0;
   const isLastQuestion = currentQuizIndex === quizzes.length - 1;
-  const isQuizFinished = isLastQuestion && quizzes.every(quiz => (quiz?.selectedAnswers?.length || 0) > 0);
+  const isQuizFinished = quizzes.every(quiz => (quiz?.selectedAnswers?.length || 0) > 0);
 
   const [isSelectOpen, setIsSelectOpen] = useState(false);
 
@@ -52,7 +52,7 @@ const Prompt = () => {
 
   return (
     <>
-      <div className='mb-20 flex w-full max-w-lg flex-col gap-4 pt-10 '>
+      <div className='mb-10 flex w-full max-w-lg flex-col gap-4 pt-4'>
         <Card className='flex flex-1 flex-col gap-4 p-6'>
           <div className='flew-row flex items-center justify-between'>
             <Select open={isSelectOpen} onOpenChange={setIsSelectOpen}>
@@ -71,7 +71,7 @@ const Prompt = () => {
             </Select>
 
             <Badge variant='outline' className='w-max gap-1'>
-              {correctAnswers.length > 1 ? 'Multiple response' : 'Single response'}
+              {correctAnswers.length > 1 ? 'Multiple responses' : 'Single response'}
               {correctAnswers.length > 1 ? <CheckboxMultiple /> : <CheckboxChecked className='h-2 w-2' />}
             </Badge>
           </div>
