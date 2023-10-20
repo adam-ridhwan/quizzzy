@@ -5,12 +5,17 @@ import { cn } from '@/lib/utils';
 import useQuiz from '@/hooks/use-quiz';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import ArrowCircle from '@/components/ui/icons/arrow-circle';
 import CheckboxChecked from '@/components/ui/icons/checkbox-checked';
 import CheckboxEmpty from '@/components/ui/icons/checkbox-empty';
 import CircleError from '@/components/ui/icons/circle-error';
 import CircleSuccess from '@/components/ui/icons/circle-success';
 import { Separator } from '@/components/ui/separator';
+import H1 from '@/components/ui/typography/h1';
 import H2 from '@/components/ui/typography/h2';
+import H3 from '@/components/ui/typography/h3';
+import H4 from '@/components/ui/typography/h4';
 
 const CORRECT_ANSWER = true;
 const WRONG_ANSWER = false;
@@ -26,7 +31,7 @@ const Results = () => {
       const textColor = evaluation ? 'text-tc-success' : 'text-tc-destructive';
 
       return (
-        <div className='flex flex-row items-center gap-1'>
+        <div className='flex flex-row items-center gap-2'>
           <Icon />
           <span className={`${textColor} text-md`}>{message}</span>
         </div>
@@ -38,35 +43,52 @@ const Results = () => {
     // multiple response
     if (correctAnswers.length > 1) {
       if (correctAnswersCount === 0) {
-        return renderEvaluation(WRONG_ANSWER, 'Wrong answers.');
+        return renderEvaluation(WRONG_ANSWER, 'Wrong');
       }
 
       if (correctAnswersCount < correctAnswers.length) {
         return renderEvaluation(
           WRONG_ANSWER,
-          `Only ${correctAnswersCount} out of ${correctAnswers.length} correct.`
+          `Only ${correctAnswersCount} out of ${correctAnswers.length} correct`
         );
       }
 
       if (selectedAnswers.length > correctAnswers.length) {
-        return renderEvaluation(WRONG_ANSWER, `There were only ${correctAnswers.length} correct answers.`);
+        return renderEvaluation(WRONG_ANSWER, `There were only ${correctAnswers.length} correct answers`);
       }
     }
 
     // single response
     if (correctAnswers[0] !== selectedAnswers[0]) {
-      return renderEvaluation(WRONG_ANSWER, 'Wrong answer.');
+      return renderEvaluation(WRONG_ANSWER, 'Wrong');
     }
 
-    return renderEvaluation(CORRECT_ANSWER, 'Correct answer.');
+    return renderEvaluation(CORRECT_ANSWER, 'Correct');
   };
 
   return (
     <>
-      <H2>Quiz complete!</H2>
-      <span>Your score is {score}</span>
+      <Card>
+        <CardHeader>
+          <H1>Quiz complete!</H1>
+          <H3 className='font-medium text-muted-foreground'>
+            {`You answered ${score} out of ${quizzes.length} correct`}
+          </H3>
+        </CardHeader>
 
-      <Button onClick={handleReset}>Try again</Button>
+        <CardContent className='flex justify-center'>
+          <div className='flex aspect-square w-32 items-center justify-center rounded-lg border-4 border-border'>
+            <span className='text-4xl'>{Math.floor((score / quizzes.length) * 100)}%</span>
+          </div>
+        </CardContent>
+
+        <CardFooter className='flex justify-end'>
+          <Button onClick={handleReset} className='flex flex-row gap-1 text-primary-foreground'>
+            <ArrowCircle />
+            <span>Try again</span>
+          </Button>
+        </CardFooter>
+      </Card>
 
       <div className='flex flex-col gap-4'>
         {quizzes.map(quiz => {

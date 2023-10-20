@@ -18,10 +18,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang='en'>
-      <body className={`${inter.className} `}>
+      <body className={`${inter.className}`}>
         <JotaiProvider>
           <ThemeProvider>
-            <div className='container'>
+            <div className='container flex min-h-[100dvh] flex-col'>
               <Header />
               {children}
             </div>

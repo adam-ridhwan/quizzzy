@@ -12,7 +12,7 @@ const Header = () => {
       <header className='flex h-14 flex-row items-center'>
         <div className='flex flex-1 items-center gap-2'>
           {/*<SideMenuMobile />*/}
-          <span className='hidden font-bold md:flex'>Quizzzy</span>
+          <span className='font-bold'>Quizzzy</span>
         </div>
 
         {currentQuizIndex < quizzes.length && (

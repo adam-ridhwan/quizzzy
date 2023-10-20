@@ -1,7 +1,7 @@
 'use client';
 
 import useQuiz from '@/hooks/use-quiz';
-import Prompts from '@/components/quiz/prompts';
+import Prompt from '@/components/quiz/prompt';
 import Results from '@/components/quiz/results';
 
 const Quiz = () => {
@@ -9,8 +9,8 @@ const Quiz = () => {
 
   return (
     <>
-      <div className='my-10 flex w-full max-w-lg flex-col gap-4'>
-        {currentQuizIndex >= quizzes.length ? <Results /> : <Prompts />}
+      <div className='mb-20 flex w-full max-w-lg flex-col gap-4 pt-10 '>
+        {currentQuizIndex >= quizzes.length ? <Results /> : <Prompt />}
       </div>
     </>
   );
