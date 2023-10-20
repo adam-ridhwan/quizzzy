@@ -101,7 +101,7 @@ const useQuiz = () => {
     });
 
     setScore(score);
-    setCurrentQuizIndex(currentQuizIndex + 1);
+    setCurrentQuizIndex(quizzes.length + 1);
     setIsLoading(false);
   };
 

@@ -118,7 +118,7 @@ const Results = () => {
                         key={choice}
                         className={cn(
                           `inline-flex h-9 items-center justify-center gap-2 rounded-md bg-secondary px-4 
-                           py-2 text-sm font-medium text-secondary-foreground shadow-sm`,
+                          py-2 text-sm font-medium text-secondary-foreground shadow-sm`,
                           { 'bg-success': isSelected && isCorrect },
                           { 'bg-destructive': isSelected && !isCorrect }
                         )}
