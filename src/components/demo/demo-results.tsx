@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import useQuiz from '@/hooks/use-quiz';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import ArrowCircle from '@/components/ui/icons/arrow-circle';
 import CheckboxChecked from '@/components/ui/icons/checkbox-checked';
 import CheckboxEmpty from '@/components/ui/icons/checkbox-empty';
@@ -15,7 +15,6 @@ import { Separator } from '@/components/ui/separator';
 import H1 from '@/components/ui/typography/h1';
 import H2 from '@/components/ui/typography/h2';
 import H3 from '@/components/ui/typography/h3';
-import H4 from '@/components/ui/typography/h4';
 
 const CORRECT_ANSWER = true;
 const WRONG_ANSWER = false;
@@ -85,7 +84,7 @@ const DemoResults = () => {
 
           <CardFooter className='flex justify-end'>
             <Button onClick={handleReset} className='flex flex-row gap-1 text-primary-foreground'>
-              <ArrowCircle />
+              <ArrowCircle className='fill-primary-foreground' />
               <span>Try again</span>
             </Button>
           </CardFooter>

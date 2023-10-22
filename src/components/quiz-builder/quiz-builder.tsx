@@ -1,33 +1,106 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 
-import { Quiz } from '@/types/quiz-types';
 import { cn } from '@/lib/utils';
+import { useQuizBuilder } from '@/hooks/use-quiz-builder';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import CheckboxChecked from '@/components/ui/icons/checkbox-checked';
 import CheckboxEmpty from '@/components/ui/icons/checkbox-empty';
-import H3 from '@/components/ui/typography/h3';
-
-const DEFAULT_QUIZ: Quiz = {
-  question: 'Write your question here',
-  correctAnswers: ['Choice 1'],
-  choices: ['Choice 1', 'Choice 2', 'Choice 3', 'Choice 4'],
-};
+import { Copy } from '@/components/ui/icons/copy';
+import { Trash } from '@/components/ui/icons/trash';
 
 const QuizBuilder = () => {
-  const [quizzes, setQuizzes] = useState<Quiz[]>([structuredClone(DEFAULT_QUIZ)]);
+  const { quizzes, setQuizzes, addQuiz, deleteQuiz, duplicateQuiz } = useQuizBuilder();
 
-  const handleChange = (e: ContentEditableEvent, quizIdx: number, choiceIdx: number) => {
+  const [deleteQuizIndex, setDeleteQuizIndex] = useState<number | null>(null);
+
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const openDeleteDialog = (index: number) => {
+    setDeleteQuizIndex(index);
+    setIsDeleteDialogOpen(true);
+  };
+
+  /** ────────────────────────────────────────────────────────────────────────────────────────────────────
+   * HANDLES QUESTION CHANGE
+   * @param e - Content editable event.
+   * @param quizIdx - The index of the quiz.
+   * @summary
+   * Handles the change of the choice text.
+   * ────────────────────────────────────────────────────────────────────────────────────────────────── */
+  const handleQuestionChange = (e: ContentEditableEvent, quizIdx: number) => {
+    const quizzesCopy = [...quizzes];
+    quizzesCopy[quizIdx].question = e.currentTarget.innerText;
+    setQuizzes(quizzesCopy);
+  };
+
+  /** ────────────────────────────────────────────────────────────────────────────────────────────────────
+   * HANDLES CHOICE CHANGE
+   * @param e - Content editable event.
+   * @param quizIdx - The index of the quiz.
+   * @param choiceIdx - The index of the choice.
+   * @summary
+   * Handles the change of the choice text.
+   * ────────────────────────────────────────────────────────────────────────────────────────────────── */
+  const handleChoiceChange = (e: ContentEditableEvent, quizIdx: number, choiceIdx: number) => {
     const quizzesCopy = [...quizzes];
     quizzesCopy[quizIdx].choices[choiceIdx] = e.currentTarget.innerText;
     setQuizzes(quizzesCopy);
   };
 
+  /** ────────────────────────────────────────────────────────────────────────────────────────────────────
+   * HANDLES CHECKBOX CHANGE
+   * @param quizIdx - The index of the quiz.
+   * @param choiceIdx - The index of the choice.
+   * @summary
+   * Handles the change of the checkbox.
+   * ────────────────────────────────────────────────────────────────────────────────────────────────── */
+  const handleCheckBoxChange = (quizIdx: number, choiceIdx: number) => {
+    const quizzesCopy = [...quizzes];
+    const { correctAnswers } = quizzesCopy[quizIdx];
+
+    quizzesCopy[quizIdx].correctAnswers = correctAnswers.includes(quizzesCopy[quizIdx].choices[choiceIdx])
+      ? correctAnswers.filter(answer => answer !== quizzesCopy[quizIdx].choices[choiceIdx])
+      : [...correctAnswers, quizzesCopy[quizIdx].choices[choiceIdx]];
+
+    setQuizzes(quizzesCopy);
+  };
+
   return (
     <>
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete question?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your question.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => deleteQuiz(deleteQuizIndex)}
+              className='text-secondary-foreground-foreground bg-tc-destructive'
+            >
+              Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <div className='mb-10 flex flex-col gap-12'>
         {quizzes.map((quiz, quizIdx) => {
           const { question, correctAnswers, choices } = quiz;
@@ -38,7 +111,12 @@ const QuizBuilder = () => {
                   <div className='flex aspect-square h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground'>
                     {quizIdx + 1}
                   </div>
-                  <H3 className='text-left'>{question}</H3>
+
+                  <ContentEditable
+                    html={question}
+                    onChange={e => handleQuestionChange(e, quizIdx)}
+                    className='w-full break-all rounded-sm text-xl font-semibold tracking-tight focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
+                  />
                 </CardHeader>
 
                 <CardContent>
@@ -51,7 +129,7 @@ const QuizBuilder = () => {
                           bg-secondary px-4 py-2 text-secondary-foreground shadow-sm hover:bg-secondary/80`
                         )}
                       >
-                        <button>
+                        <button onClick={() => handleCheckBoxChange(quizIdx, choiceIdx)}>
                           {correctAnswers?.includes(choice) ? (
                             <CheckboxChecked className='h-5 w-5' />
                           ) : (
@@ -61,26 +139,31 @@ const QuizBuilder = () => {
 
                         <ContentEditable
                           html={choice}
-                          onChange={e => handleChange(e, quizIdx, choiceIdx)}
-                          className='w-full break-all rounded-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring '
+                          onChange={e => handleChoiceChange(e, quizIdx, choiceIdx)}
+                          className='w-full break-all rounded-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
                         />
                       </div>
                     ))}
                   </div>
                 </CardContent>
+
+                <CardFooter className='justify-end gap-2'>
+                  <Button variant='outline' size='icon' onClick={() => duplicateQuiz(quizIdx)}>
+                    <span className='sr-only'>Copy</span>
+                    <Copy />
+                  </Button>
+                  <Button variant='outline' size='icon' onClick={() => openDeleteDialog(quizIdx)}>
+                    <span className='sr-only'>Delete</span>
+                    <Trash />
+                  </Button>
+                </CardFooter>
               </Card>
             </div>
           );
         })}
 
         <div className='flex justify-end'>
-          <Button
-            onClick={() => {
-              setQuizzes([...quizzes, structuredClone(DEFAULT_QUIZ)]);
-            }}
-          >
-            Add a question
-          </Button>
+          <Button onClick={addQuiz}>Add a question</Button>
         </div>
       </div>
     </>

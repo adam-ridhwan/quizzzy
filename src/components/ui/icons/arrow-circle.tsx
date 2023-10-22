@@ -9,7 +9,7 @@ const ArrowCircle = ({ className }: Props) => {
     <>
       <svg
         xmlns='http://www.w3.org/2000/svg'
-        className={cn('h-5 w-5 fill-primary-foreground', className)}
+        className={cn('h-5 w-5 fill-primary', className)}
         viewBox='0 0 16 16'
       >
         <path fillRule='evenodd' d='M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z' />
