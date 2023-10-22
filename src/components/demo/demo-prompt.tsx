@@ -17,8 +17,8 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import ArrowSquareLeft from '@/components/ui/icons/arrow-square-left';
-import ArrowSquareRight from '@/components/ui/icons/arrow-square-right';
+import ArrowLeft from '@/components/ui/icons/arrow-left';
+import ArrowRight from '@/components/ui/icons/arrow-right';
 import CheckboxChecked from '@/components/ui/icons/checkbox-checked';
 import CheckboxEmpty from '@/components/ui/icons/checkbox-empty';
 import CheckboxMultiple from '@/components/ui/icons/checkbox-multiple';
@@ -91,7 +91,7 @@ const DemoPrompt = () => {
             </Badge>
 
             <Select open={isSelectOpen} onOpenChange={setIsSelectOpen}>
-              <SelectTrigger className='focus:ring-none h-[22px] w-max gap-2 border-none p-0 text-sm text-muted-foreground shadow-none focus:ring-0'>
+              <SelectTrigger className='w-max gap-2 text-sm text-muted-foreground shadow-none focus:ring-0'>
                 {`Question ${currentQuizIndex + 1} of ${quizzes.length}`}
               </SelectTrigger>
 
@@ -122,20 +122,6 @@ const DemoPrompt = () => {
           <div className='flex flex-1 items-center'>
             <H2>{question}</H2>
           </div>
-
-          <div className={cn('flex justify-end gap-4')}>
-            <button disabled={isLoading || isFirstQuestion} onClick={handleNavigateBackward}>
-              <ArrowSquareLeft
-                className={cn(`h-9 w-9`, { 'fill-muted-foreground': isLoading || isFirstQuestion })}
-              />
-            </button>
-
-            <button disabled={isLoading || isLastQuestion} onClick={handleNavigateForward}>
-              <ArrowSquareRight
-                className={cn(`h-9 w-9`, { 'fill-muted-foreground': isLoading || isLastQuestion })}
-              />
-            </button>
-          </div>
         </Card>
 
         <div className='flex flex-col gap-4'>
@@ -154,11 +140,27 @@ const DemoPrompt = () => {
           ))}
         </div>
 
-        <div className='mt-4 h-9'>
+        <div className='mt-4 grid grid-cols-9 gap-4'>
+          <Button
+            disabled={isLoading || isFirstQuestion}
+            onClick={handleNavigateBackward}
+            className='col-span-2 bg-primary/80'
+          >
+            <ArrowLeft className={cn(``, { 'fill-muted-foreground': isLoading || isFirstQuestion })} />
+          </Button>
+
+          <Button
+            disabled={isLoading || isLastQuestion}
+            onClick={handleNavigateForward}
+            className='col-span-2 bg-primary/80'
+          >
+            <ArrowRight className={cn(``, { 'fill-muted-foreground': isLoading || isLastQuestion })} />
+          </Button>
+
           <Button
             disabled={isLoading || !isQuizFinished}
             onClick={handleConfirmSubmission}
-            className={cn('w-full')}
+            className={cn('col-span-2 col-end-10', { hidden: !isQuizFinished })}
           >
             {isLoading ? <LoadingSpinner /> : 'Submit'}
           </Button>
