@@ -82,8 +82,12 @@ const DemoPrompt = () => {
         </AlertDialogContent>
       </AlertDialog>
 
-      <div className='mb-10 flex w-full max-w-lg flex-col gap-4 pt-4 sm:justify-center'>
-        <Card className='flex flex-1 flex-col gap-4 p-6 sm:h-[350px] sm:flex-initial'>
+      <div className={cn(`mb-10 flex w-full max-w-lg flex-col gap-4 pt-4 sm:justify-center`)}>
+        <Card
+          className={cn(`flex flex-1 flex-col gap-4 p-6 sm:h-[350px] sm:flex-initial`, {
+            'pointer-events-none opacity-20': isLoading,
+          })}
+        >
           <div className='flew-row flex items-center justify-between'>
             <Badge variant='outline' className='w-max gap-1'>
               {correctAnswers.length > 1 ? 'Multiple responses' : 'Single response'}
@@ -124,7 +128,11 @@ const DemoPrompt = () => {
           </div>
         </Card>
 
-        <div className='flex flex-col gap-4'>
+        <div
+          className={cn(`flex flex-col gap-4`, {
+            'pointer-events-none opacity-20': isLoading,
+          })}
+        >
           {choices.map(choice => (
             <Button
               key={choice}
@@ -166,6 +174,13 @@ const DemoPrompt = () => {
           </Button>
         </div>
       </div>
+
+      {isLoading && (
+        <div className='pointer-events-none fixed flex h-[100dvh] w-full items-center justify-center gap-2 bg-secondary/80 pb-20'>
+          <LoadingSpinner />
+          <span>Submitting</span>
+        </div>
+      )}
     </>
   );
 };
