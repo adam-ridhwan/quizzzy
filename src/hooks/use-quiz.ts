@@ -107,6 +107,7 @@ const useQuiz = () => {
 
   return {
     quizzes,
+    setQuizzes,
     currentQuizIndex,
     setCurrentQuizIndex,
     progress,

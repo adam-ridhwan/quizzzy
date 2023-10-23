@@ -9,34 +9,34 @@ const NEW_QUIZ: Quiz = {
   choices: ['Choice 1', 'Choice 2', 'Choice 3', 'Choice 4'],
 };
 
-const quizzesAtom = atomWithStorage<Quiz[]>('new quiz', [structuredClone(NEW_QUIZ)]);
+const draftQuizzesAtom = atomWithStorage<Quiz[]>('new quiz', [structuredClone(NEW_QUIZ)]);
 
 export const useQuizBuilder = () => {
-  const [quizzes, setQuizzes] = useAtom(quizzesAtom);
+  const [draftQuizzes, setDraftQuizzes] = useAtom(draftQuizzesAtom);
 
-  const addQuiz = () => {
-    setQuizzes([...quizzes, structuredClone(NEW_QUIZ)]);
+  const addDraftQuiz = () => {
+    setDraftQuizzes([...draftQuizzes, structuredClone(NEW_QUIZ)]);
   };
 
-  const resetQuizzes = () => {
-    setQuizzes([structuredClone(NEW_QUIZ)]);
+  const resetDraftQuiz = () => {
+    setDraftQuizzes([structuredClone(NEW_QUIZ)]);
   };
 
-  const deleteQuiz = (index: number | null) => {
-    const newQuizzes = [...quizzes];
+  const deleteDraftQuiz = (index: number | null) => {
+    const newQuizzes = [...draftQuizzes];
     if (index === null) return;
 
     newQuizzes.splice(index, 1);
-    setQuizzes(newQuizzes);
+    setDraftQuizzes(newQuizzes);
   };
 
-  const duplicateQuiz = (index: number) => {
-    setQuizzes(prev => [
+  const duplicateDraftQuiz = (index: number) => {
+    setDraftQuizzes(prev => [
       ...prev.slice(0, index + 1),
-      structuredClone(quizzes[index]),
+      structuredClone(draftQuizzes[index]),
       ...prev.slice(index + 1),
     ]);
   };
 
-  return { quizzes, setQuizzes, addQuiz, resetQuizzes, deleteQuiz, duplicateQuiz };
+  return { draftQuizzes, setDraftQuizzes, addDraftQuiz, resetDraftQuiz, deleteDraftQuiz, duplicateDraftQuiz };
 };

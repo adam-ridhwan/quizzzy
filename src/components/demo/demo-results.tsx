@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import { useEffectOnce } from 'usehooks-ts';
 
 import { Choices } from '@/types/quiz-types';
 import { cn } from '@/lib/utils';

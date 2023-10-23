@@ -4,6 +4,7 @@ import { useState } from 'react';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 
 import { cn } from '@/lib/utils';
+import useQuiz from '@/hooks/use-quiz';
 import { useQuizBuilder } from '@/hooks/use-quiz-builder';
 import {
   AlertDialog,
@@ -14,7 +15,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
@@ -24,7 +24,8 @@ import { Copy } from '@/components/ui/icons/copy';
 import { Trash } from '@/components/ui/icons/trash';
 
 const QuizBuilder = () => {
-  const { quizzes, setQuizzes, addQuiz, deleteQuiz, duplicateQuiz } = useQuizBuilder();
+  const { draftQuizzes, setDraftQuizzes, addDraftQuiz, deleteDraftQuiz, duplicateDraftQuiz } =
+    useQuizBuilder();
 
   const [deleteQuizIndex, setDeleteQuizIndex] = useState<number | null>(null);
 
@@ -42,9 +43,9 @@ const QuizBuilder = () => {
    * Handles the change of the choice text.
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
   const handleQuestionChange = (e: ContentEditableEvent, quizIdx: number) => {
-    const quizzesCopy = [...quizzes];
+    const quizzesCopy = [...draftQuizzes];
     quizzesCopy[quizIdx].question = e.currentTarget.innerText;
-    setQuizzes(quizzesCopy);
+    setDraftQuizzes(quizzesCopy);
   };
 
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -56,9 +57,9 @@ const QuizBuilder = () => {
    * Handles the change of the choice text.
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
   const handleChoiceChange = (e: ContentEditableEvent, quizIdx: number, choiceIdx: number) => {
-    const quizzesCopy = [...quizzes];
+    const quizzesCopy = [...draftQuizzes];
     quizzesCopy[quizIdx].choices[choiceIdx] = e.currentTarget.innerText;
-    setQuizzes(quizzesCopy);
+    setDraftQuizzes(quizzesCopy);
   };
 
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -69,14 +70,14 @@ const QuizBuilder = () => {
    * Handles the change of the checkbox.
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
   const handleCheckBoxChange = (quizIdx: number, choiceIdx: number) => {
-    const quizzesCopy = [...quizzes];
+    const quizzesCopy = [...draftQuizzes];
     const { correctAnswers } = quizzesCopy[quizIdx];
 
     quizzesCopy[quizIdx].correctAnswers = correctAnswers.includes(quizzesCopy[quizIdx].choices[choiceIdx])
       ? correctAnswers.filter(answer => answer !== quizzesCopy[quizIdx].choices[choiceIdx])
       : [...correctAnswers, quizzesCopy[quizIdx].choices[choiceIdx]];
 
-    setQuizzes(quizzesCopy);
+    setDraftQuizzes(quizzesCopy);
   };
 
   return (
@@ -92,7 +93,7 @@ const QuizBuilder = () => {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => deleteQuiz(deleteQuizIndex)}
+              onClick={() => deleteDraftQuiz(deleteQuizIndex)}
               className='text-secondary-foreground-foreground bg-tc-destructive'
             >
               Continue
@@ -102,7 +103,7 @@ const QuizBuilder = () => {
       </AlertDialog>
 
       <div className='mb-10 flex flex-col gap-12'>
-        {quizzes.map((quiz, quizIdx) => {
+        {draftQuizzes.map((quiz, quizIdx) => {
           const { question, correctAnswers, choices } = quiz;
           return (
             <div key={quizIdx} className='flex flex-col gap-4'>
@@ -148,7 +149,7 @@ const QuizBuilder = () => {
                 </CardContent>
 
                 <CardFooter className='justify-end gap-2'>
-                  <Button variant='outline' size='icon' onClick={() => duplicateQuiz(quizIdx)}>
+                  <Button variant='outline' size='icon' onClick={() => duplicateDraftQuiz(quizIdx)}>
                     <span className='sr-only'>Copy</span>
                     <Copy />
                   </Button>
@@ -163,7 +164,7 @@ const QuizBuilder = () => {
         })}
 
         <div className='flex justify-end'>
-          <Button onClick={addQuiz}>Add a question</Button>
+          <Button onClick={addDraftQuiz}>Add a question</Button>
         </div>
       </div>
     </>

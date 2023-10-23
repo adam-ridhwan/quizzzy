@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
+import useQuiz from '@/hooks/use-quiz';
 import { useQuizBuilder } from '@/hooks/use-quiz-builder';
 import {
   AlertDialog,
@@ -18,16 +20,21 @@ import ArrowCircle from '@/components/ui/icons/arrow-circle';
 import { Rocket } from '@/components/ui/icons/rocket';
 
 const QuizBuilderSettings = () => {
-  const { resetQuizzes } = useQuizBuilder();
+  const router = useRouter();
+  const { setQuizzes } = useQuiz();
+  const { draftQuizzes, resetDraftQuiz } = useQuizBuilder();
 
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
   const [isPublishDialogOpen, setIsPublishDialogOpen] = useState(false);
 
   const openResetDialog = () => setIsResetDialogOpen(true);
-  const closeResetDialog = () => setIsResetDialogOpen(false);
-
   const openPublishDialog = () => setIsPublishDialogOpen(true);
-  const closePublishDialog = () => setIsPublishDialogOpen(false);
+
+  const handleSetNewQuiz = () => {
+    const newQuizzes = draftQuizzes.map(quiz => ({ ...quiz, selectedAnswers: [] }));
+    setQuizzes(newQuizzes);
+    router.push('/demo'); // TODO: change to /quiz/[id]
+  };
 
   return (
     <>
@@ -43,7 +50,10 @@ const QuizBuilderSettings = () => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={resetQuizzes} className='bg-tc-destructive text-secondary-foreground'>
+            <AlertDialogAction
+              onClick={resetDraftQuiz}
+              className='bg-tc-destructive text-secondary-foreground'
+            >
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -60,7 +70,7 @@ const QuizBuilderSettings = () => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction>Continue</AlertDialogAction>
+            <AlertDialogAction onClick={handleSetNewQuiz}>Publish</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
