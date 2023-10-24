@@ -16,10 +16,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 import { SortableQuestionList } from '@/app/quiz-builder/components/sortable-question-list';
 
 const QuizBuilder = () => {
-  const { resetDraftQuiz } = useQuizBuilder();
+  const { resetDraftQuiz, addDraftQuiz } = useQuizBuilder();
 
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
   const openResetDialog = () => setIsResetDialogOpen(true);
@@ -27,6 +28,11 @@ const QuizBuilder = () => {
   return (
     <>
       <SortableQuestionList />
+
+      <div>
+        <Button onClick={openResetDialog}>Reset</Button>
+        <Button onClick={addDraftQuiz}>Add a question</Button>
+      </div>
 
       <AlertDialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
         <AlertDialogContent>

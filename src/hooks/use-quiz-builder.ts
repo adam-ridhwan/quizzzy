@@ -8,12 +8,12 @@ import { Quiz } from '@/types/quiz-types';
 
 const NEW_QUIZ: Quiz = {
   _id: uuidv4(),
-  question: 'What is the best programming language?',
+  question: '',
   choices: [
-    { id: uuidv4(), choice: 'Java', isCorrect: false },
-    { id: uuidv4(), choice: 'TypeScript', isCorrect: false },
-    { id: uuidv4(), choice: 'Python', isCorrect: false },
-    { id: uuidv4(), choice: 'C3', isCorrect: false },
+    { id: uuidv4(), choice: '', isCorrect: false },
+    { id: uuidv4(), choice: '', isCorrect: false },
+    { id: uuidv4(), choice: '', isCorrect: false },
+    { id: uuidv4(), choice: '', isCorrect: false },
   ],
 };
 
