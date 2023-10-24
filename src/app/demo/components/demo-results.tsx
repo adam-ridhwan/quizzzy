@@ -97,7 +97,7 @@ const DemoResults = () => {
             const selectedAnswers = quiz.selectedAnswers ?? [];
 
             return (
-              <Fragment key={quiz._id}>
+              <Fragment key={quiz.id}>
                 <Separator className='my-8' />
 
                 <div className='flex flex-col gap-4'>

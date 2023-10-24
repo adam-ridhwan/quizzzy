@@ -1,13 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import CheckboxChecked from '@/icons/checkbox-checked';
 import CheckboxEmpty from '@/icons/checkbox-empty';
 import { Copy } from '@/icons/copy';
-import { DragHandle } from '@/icons/drag-handle';
-import { ThreeDotsVertical } from '@/icons/three-dots-vertical';
-import { Trash } from '@/icons/trash';
 import ContentEditable from 'react-contenteditable';
 
 import { cn } from '@/lib/utils';
@@ -15,7 +12,6 @@ import { useQuizBuilder } from '@/hooks/use-quiz-builder';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { DeleteQuestionButton } from '@/app/quiz-builder/components/buttons/delete-question-button';
-import { ResetQuizButton } from '@/app/quiz-builder/components/buttons/reset-quiz-button';
 import { SortableList } from '@/app/quiz-builder/components/sortable-list/sortable-list';
 
 function getMockItems() {
