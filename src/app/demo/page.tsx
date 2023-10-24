@@ -1,4 +1,4 @@
-import DemoPractice from '@/components/demo/demo-practice';
+import DemoPractice from '@/app/demo/components/demo-practice';
 
 const DemoPage = () => <DemoPractice />;
 

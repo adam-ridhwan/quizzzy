@@ -1,12 +1,12 @@
+import '../styles/globals.css';
+
 import { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Header from '@/header/header';
 import JotaiProvider from '@/providers/jotai-provider';
 import ThemeProvider from '@/providers/theme-provider';
-
-import Header from '@/components/header/header';
-
-import '../styles/globals.css';
+import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,6 +24,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <div className='container flex min-h-[100dvh] flex-col'>
               <Header />
               {children}
+              <Toaster richColors position='top-center' />
             </div>
           </ThemeProvider>
         </JotaiProvider>

@@ -9,7 +9,7 @@ export const Rocket = ({ className }: Props) => {
     <>
       <svg
         xmlns='http://www.w3.org/2000/svg'
-        className={cn('fill-primary-foreground-foreground h-4 w-4', className)}
+        className={cn('h-4 w-4 fill-primary-foreground', className)}
         viewBox='0 0 16 16'
       >
         <path d='M9.752 6.193c.599.6 1.73.437 2.528-.362.798-.799.96-1.932.362-2.531-.599-.6-1.73-.438-2.528.361-.798.8-.96 1.933-.362 2.532Z' />

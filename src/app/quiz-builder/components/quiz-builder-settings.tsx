@@ -2,6 +2,9 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import ArrowCircle from '@/icons/arrow-circle';
+import { Rocket } from '@/icons/rocket';
+import { toast } from 'sonner';
 
 import useQuiz from '@/hooks/use-quiz';
 import { useQuizBuilder } from '@/hooks/use-quiz-builder';
@@ -16,21 +19,24 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import ArrowCircle from '@/components/ui/icons/arrow-circle';
-import { Rocket } from '@/components/ui/icons/rocket';
 
 const QuizBuilderSettings = () => {
   const router = useRouter();
+
   const { setQuizzes } = useQuiz();
-  const { draftQuizzes, resetDraftQuiz } = useQuizBuilder();
+  const { draftQuizzes } = useQuizBuilder();
 
-  const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
   const [isPublishDialogOpen, setIsPublishDialogOpen] = useState(false);
-
-  const openResetDialog = () => setIsResetDialogOpen(true);
   const openPublishDialog = () => setIsPublishDialogOpen(true);
 
   const handleSetNewQuiz = () => {
+    const doAllQuestionsHaveAtLeastOneCorrectAnswer = draftQuizzes.every(quiz =>
+      quiz.choices.some(choice => choice.isCorrect)
+    );
+
+    if (!doAllQuestionsHaveAtLeastOneCorrectAnswer)
+      return toast.error('All questions must have at least one correct answer.');
+
     const newQuizzes = draftQuizzes.map(quiz => ({ ...quiz, selectedAnswers: [] }));
     setQuizzes(newQuizzes);
     router.push('/demo'); // TODO: change to /quiz/[id]
@@ -38,28 +44,6 @@ const QuizBuilderSettings = () => {
 
   return (
     <>
-      <AlertDialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle className='text-balance'>
-              Are you sure you want to reset your quiz?
-            </AlertDialogTitle>
-            <AlertDialogDescription className='text-balance'>
-              This action cannot be undone. All questions will be deleted.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={resetDraftQuiz}
-              className='bg-tc-destructive text-secondary-foreground'
-            >
-              Continue
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
       <AlertDialog open={isPublishDialogOpen} onOpenChange={setIsPublishDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -76,10 +60,6 @@ const QuizBuilderSettings = () => {
       </AlertDialog>
 
       <div>
-        <Button variant='outline' onClick={openResetDialog} className='gap-1'>
-          Reset
-          <ArrowCircle className='h-4 w-4' />
-        </Button>
         <Button onClick={openPublishDialog} className='gap-1'>
           Publish
           <Rocket />

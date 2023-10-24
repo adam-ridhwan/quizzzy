@@ -6,23 +6,19 @@ const QuestionSchema = z
   .max(4, 'There should be exactly 4 correct answers');
 export type Question = z.infer<typeof QuestionSchema>;
 
-const CorrectAnswerSchema = z.array(z.string());
-export type CorrectAnswer = z.infer<typeof CorrectAnswerSchema>;
-
 const ChoicesSchema = z
-  .array(z.string())
+  .array(z.object({ id: z.string(), choice: z.string(), isCorrect: z.boolean() }))
   .min(4, 'There should be exactly 4 choices')
   .max(4, 'There should be exactly 4 choices');
 export type Choices = z.infer<typeof ChoicesSchema>;
 
 const QuizSchema = z.object({
-  _id: z.string().optional(),
+  _id: z.string(),
   question: QuestionSchema,
-  correctAnswers: CorrectAnswerSchema,
   choices: ChoicesSchema,
 });
 export type Quiz = z.infer<typeof QuizSchema>;
 
 export type QuizzesWithSelectedAnswers = {
-  selectedAnswers?: Choices;
+  selectedAnswers?: string[];
 } & Quiz;

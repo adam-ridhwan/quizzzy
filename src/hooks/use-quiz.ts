@@ -1,11 +1,14 @@
 import { QUIZZES } from '@/constants/development';
 import { atom, useAtom } from 'jotai';
+import { atomWithStorage } from 'jotai/utils';
+import { useEffectOnce } from 'usehooks-ts';
 
 import { QuizzesWithSelectedAnswers } from '@/types/quiz-types';
 import { delay } from '@/lib/utils';
 
 const scoreAtom = atom(0);
-const quizzesAtom = atom<QuizzesWithSelectedAnswers[]>(
+const quizzesAtom = atomWithStorage<QuizzesWithSelectedAnswers[]>(
+  'quiz',
   QUIZZES.map(quiz => ({ ...quiz, selectedAnswers: [] }))
 );
 const currentQuizAtom = atom(0);
@@ -15,6 +18,7 @@ const useQuiz = () => {
   const [score, setScore] = useAtom(scoreAtom);
   const [quizzes, setQuizzes] = useAtom(quizzesAtom);
   const [currentQuizIndex, setCurrentQuizIndex] = useAtom(currentQuizAtom);
+
   const [isLoading, setIsLoading] = useAtom(loadingAtom);
 
   const totalAnsweredQuizzes = quizzes.reduce<number>((acc, quiz) => {
@@ -25,45 +29,44 @@ const useQuiz = () => {
 
   const progress = (totalAnsweredQuizzes / quizzes.length) * 100 || 10;
 
-  /** ────────────────────────────────────────────────────────────────────────────────────────────────────
-   * HANDLE NAVIGATE BACKWARD
-   * ────────────────────────────────────────────────────────────────────────────────────────────────── */
-  const handleNavigateBackward = () => {
-    if (currentQuizIndex > 0) {
-      setCurrentQuizIndex(currentQuizIndex - 1);
-    }
-  };
+  // useEffectOnce(() => {
+  //   const quiz = localStorage.getItem('quiz');
+  //   const value = quiz ? JSON.parse(quiz) : null;
+  //
+  //   if (value === 0) {
+  //     setQuizzes();
+  //   }
+  // });
 
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
-   * HANDLE NAVIGATE FORWARD
+   * HANDLE NAVIGATION
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
-  const handleNavigateForward = () => {
-    setCurrentQuizIndex(currentQuizIndex + 1);
-  };
+  const handleNavigateBackward = () => currentQuizIndex > 0 && setCurrentQuizIndex(currentQuizIndex - 1);
+  const handleNavigateForward = () => setCurrentQuizIndex(currentQuizIndex + 1);
 
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
    * HANDLE SELECT
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
-  const handleSelect = (choice: string) => {
-    const updatedQuizzes = quizzes.map((quiz, index) => {
-      const selectedAnswers = quiz.selectedAnswers ?? [];
-      const correctAnswers = quiz.correctAnswers ?? [];
+  const handleSelect = (currentQuizIndex: number, choice: string) => {
+    const quizCopy = [...quizzes];
 
-      if (index !== currentQuizIndex) return quiz;
+    const currentQuiz = quizCopy[currentQuizIndex];
+    const selectedAnswers = currentQuiz.selectedAnswers ?? [];
+    const correctAnswers = currentQuiz.choices.filter(item => item.isCorrect).map(item => item.choice);
 
-      // single response
-      if (correctAnswers.length === 1) return { ...quiz, selectedAnswers: [choice] };
+    // single response
+    if (correctAnswers.length === 1) {
+      currentQuiz.selectedAnswers = [choice];
+    }
 
-      // multiple response
-      if (correctAnswers.length > 1)
-        return selectedAnswers?.includes(choice)
-          ? { ...quiz, selectedAnswers: selectedAnswers.filter(item => item !== choice) }
-          : { ...quiz, selectedAnswers: [...selectedAnswers, choice] };
+    // multiple response
+    if (correctAnswers.length > 1) {
+      currentQuiz.selectedAnswers = selectedAnswers.includes(choice)
+        ? selectedAnswers.filter(item => item !== choice)
+        : [...selectedAnswers, choice];
+    }
 
-      return quiz;
-    });
-
-    setQuizzes(updatedQuizzes);
+    setQuizzes(quizCopy);
   };
 
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -72,7 +75,7 @@ const useQuiz = () => {
   const handleReset = () => {
     setScore(0);
     setCurrentQuizIndex(0);
-    setQuizzes(quizzes.map(quiz => ({ ...quiz, selectedAnswers: [] })));
+    setQuizzes(QUIZZES.map(quiz => ({ ...quiz, selectedAnswers: [] })));
   };
 
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -86,7 +89,7 @@ const useQuiz = () => {
     let score = 0;
     quizzes.forEach(quiz => {
       const selectedAnswers = quiz.selectedAnswers ?? [];
-      const correctAnswers = quiz.correctAnswers ?? [];
+      const correctAnswers = quiz.choices.filter(choice => choice.isCorrect).map(c => c.choice) ?? [];
 
       // single response
       if (correctAnswers.length === 1) {

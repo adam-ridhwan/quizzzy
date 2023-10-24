@@ -1,65 +1,107 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import { QuizzesWithSelectedAnswers } from '@/types/quiz-types';
 
 export const QUIZZES: QuizzesWithSelectedAnswers[] = [
   {
     _id: '1',
     question: 'What is the best programming language?',
-    correctAnswers: ['TypeScript', 'Python'],
-    choices: ['Java', 'TypeScript', 'Python', 'C#'],
+    choices: [
+      { id: uuidv4(), choice: 'Java', isCorrect: false },
+      { id: uuidv4(), choice: 'TypeScript', isCorrect: true },
+      { id: uuidv4(), choice: 'Python', isCorrect: true },
+      { id: uuidv4(), choice: 'C#', isCorrect: false },
+    ],
   },
   {
     _id: '2',
     question: 'Which language is primarily used for iOS development?',
-    correctAnswers: ['Swift'],
-    choices: ['Java', 'Swift', 'Kotlin', 'JavaScript'],
+    choices: [
+      { id: uuidv4(), choice: 'Java', isCorrect: false },
+      { id: uuidv4(), choice: 'Swift', isCorrect: true },
+      { id: uuidv4(), choice: 'Kotlin', isCorrect: false },
+      { id: uuidv4(), choice: 'JavaScript', isCorrect: false },
+    ],
   },
   {
     _id: '3',
     question: 'Which database system is based on SQL and primarily used for relational databases?',
-    correctAnswers: ['MySQL'],
-    choices: ['MongoDB', 'MySQL', 'Redis', 'Cassandra'],
+    choices: [
+      { id: uuidv4(), choice: 'MongoDB', isCorrect: false },
+      { id: uuidv4(), choice: 'MySQL', isCorrect: true },
+      { id: uuidv4(), choice: 'Redis', isCorrect: false },
+      { id: uuidv4(), choice: 'Cassandra', isCorrect: false },
+    ],
   },
   {
     _id: '4',
     question: 'Which of the following is not a front-end framework?',
-    correctAnswers: ['Express.js'],
-    choices: ['React', 'Vue.js', 'Angular', 'Express.js'],
+    choices: [
+      { id: uuidv4(), choice: 'React', isCorrect: false },
+      { id: uuidv4(), choice: 'Vue.js', isCorrect: false },
+      { id: uuidv4(), choice: 'Angular', isCorrect: false },
+      { id: uuidv4(), choice: 'Express.js', isCorrect: true },
+    ],
   },
   {
     _id: '5',
     question: 'Which tool is commonly used for version control in software development?',
-    correctAnswers: ['Git'],
-    choices: ['Git', 'JIRA', 'Trello', 'Slack'],
+    choices: [
+      { id: uuidv4(), choice: 'Git', isCorrect: true },
+      { id: uuidv4(), choice: 'JIRA', isCorrect: false },
+      { id: uuidv4(), choice: 'Trello', isCorrect: false },
+      { id: uuidv4(), choice: 'Slack', isCorrect: false },
+    ],
   },
   {
     _id: '6',
     question: 'Which protocol is commonly used for secure web traffic?',
-    correctAnswers: ['HTTPS'],
-    choices: ['HTTP', 'HTTPS', 'FTP', 'SMTP'],
+    choices: [
+      { id: uuidv4(), choice: 'HTTP', isCorrect: false },
+      { id: uuidv4(), choice: 'HTTPS', isCorrect: true },
+      { id: uuidv4(), choice: 'FTP', isCorrect: false },
+      { id: uuidv4(), choice: 'SMTP', isCorrect: false },
+    ],
   },
   {
     _id: '7',
     question: 'Which language is used for styling web content?',
-    correctAnswers: ['CSS'],
-    choices: ['HTML', 'CSS', 'JavaScript', 'PHP'],
+    choices: [
+      { id: uuidv4(), choice: 'HTML', isCorrect: false },
+      { id: uuidv4(), choice: 'CSS', isCorrect: true },
+      { id: uuidv4(), choice: 'JavaScript', isCorrect: false },
+      { id: uuidv4(), choice: 'PHP', isCorrect: false },
+    ],
   },
   {
     _id: '8',
     question:
       'Which of the following is a popular JavaScript runtime built on Chrome’s V8 JavaScript engine?',
-    correctAnswers: ['Node.js'],
-    choices: ['Django', 'Node.js', 'Ruby on Rails', 'Flask'],
+    choices: [
+      { id: uuidv4(), choice: 'Django', isCorrect: false },
+      { id: uuidv4(), choice: 'Node.js', isCorrect: true },
+      { id: uuidv4(), choice: 'Ruby on Rails', isCorrect: false },
+      { id: uuidv4(), choice: 'Flask', isCorrect: false },
+    ],
   },
   {
     _id: '9',
     question: 'Which of the following is not a JavaScript framework or library?',
-    correctAnswers: ['Laravel'],
-    choices: ['React', 'Vue.js', 'Angular', 'Laravel'],
+    choices: [
+      { id: uuidv4(), choice: 'React', isCorrect: false },
+      { id: uuidv4(), choice: 'Vue.js', isCorrect: false },
+      { id: uuidv4(), choice: 'Angular', isCorrect: false },
+      { id: uuidv4(), choice: 'Laravel', isCorrect: true },
+    ],
   },
   {
     _id: '10',
     question: 'Which data format is commonly used for asynchronous browser/server communication?',
-    correctAnswers: ['JSON'],
-    choices: ['XML', 'JSON', 'HTML', 'CSV'],
+    choices: [
+      { id: uuidv4(), choice: 'XML', isCorrect: false },
+      { id: uuidv4(), choice: 'JSON', isCorrect: true },
+      { id: uuidv4(), choice: 'HTML', isCorrect: false },
+      { id: uuidv4(), choice: 'CSV', isCorrect: false },
+    ],
   },
 ];

@@ -1,8 +1,8 @@
 'use client';
 
 import useQuiz from '@/hooks/use-quiz';
-import DemoPrompt from '@/components/demo/demo-prompt';
-import DemoResults from '@/components/demo/demo-results';
+import DemoPrompt from '@/app/demo/components/demo-prompt';
+import DemoResults from '@/app/demo/components/demo-results';
 
 const DemoPractice = () => {
   const { quizzes, currentQuizIndex } = useQuiz();

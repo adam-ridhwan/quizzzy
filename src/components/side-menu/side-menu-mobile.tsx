@@ -1,3 +1,6 @@
+import H1 from '@/typography/h1';
+import H2 from '@/typography/h2';
+
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -8,8 +11,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import H1 from '@/components/ui/typography/h1';
-import H2 from '@/components/ui/typography/h2';
 
 const SideMenuMobile = () => {
   return (

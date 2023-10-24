@@ -1,7 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import ArrowLeft from '@/icons/arrow-left';
+import ArrowRight from '@/icons/arrow-right';
+import CheckboxChecked from '@/icons/checkbox-checked';
+import CheckboxEmpty from '@/icons/checkbox-empty';
+import CheckboxMultiple from '@/icons/checkbox-multiple';
+import LoadingSpinner from '@/icons/spinner';
+import H2 from '@/typography/h2';
 import { useEffectOnce } from 'usehooks-ts';
 
-import { Choices, CorrectAnswer, Question } from '@/types/quiz-types';
+import { Choices, Question } from '@/types/quiz-types';
 import { cn } from '@/lib/utils';
 import useQuiz from '@/hooks/use-quiz';
 import {
@@ -17,16 +24,9 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import ArrowLeft from '@/components/ui/icons/arrow-left';
-import ArrowRight from '@/components/ui/icons/arrow-right';
-import CheckboxChecked from '@/components/ui/icons/checkbox-checked';
-import CheckboxEmpty from '@/components/ui/icons/checkbox-empty';
-import CheckboxMultiple from '@/components/ui/icons/checkbox-multiple';
-import LoadingSpinner from '@/components/ui/icons/spinner';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectTrigger } from '@/components/ui/select';
-import H2 from '@/components/ui/typography/h2';
 
 const DemoPrompt = () => {
   const {
@@ -43,9 +43,8 @@ const DemoPrompt = () => {
   } = useQuiz();
 
   let question: Question = '';
-  let correctAnswers: CorrectAnswer = [];
   let choices: Choices = [];
-  let selectedAnswers: Choices | undefined = [];
+  let selectedAnswers: string[] | undefined = [];
 
   const currentQuestion = quizzes[currentQuizIndex];
   const isFirstQuestion = currentQuizIndex === 0;
@@ -56,7 +55,7 @@ const DemoPrompt = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   if (currentQuestion) {
-    ({ question, correctAnswers, choices, selectedAnswers } = quizzes[currentQuizIndex]);
+    ({ question, choices, selectedAnswers } = quizzes[currentQuizIndex]);
   }
 
   const handleJumpToQuestion = (index: number) => () => setCurrentQuizIndex(index);
@@ -89,30 +88,35 @@ const DemoPrompt = () => {
           })}
         >
           <div className='flew-row flex items-center justify-between'>
-            <Badge variant='outline' className='w-max gap-1'>
-              {correctAnswers.length > 1 ? 'Multiple responses' : 'Single response'}
-              {correctAnswers.length > 1 ? <CheckboxMultiple /> : <CheckboxChecked className='h-2 w-2' />}
+            <Badge variant='outline' className='flex w-max flex-row gap-1'>
+              {choices.filter(choice => choice.isCorrect).length ? 'Multiple responses' : 'Single response'}
+              {choices.filter(choice => choice.isCorrect).length ? (
+                <CheckboxMultiple />
+              ) : (
+                <CheckboxChecked className='h-2 w-2' />
+              )}
             </Badge>
 
             <Select open={isSelectOpen} onOpenChange={setIsSelectOpen}>
               <SelectTrigger className='w-max gap-2 text-sm text-muted-foreground shadow-none focus:ring-0'>
-                {`Question ${currentQuizIndex + 1} of ${quizzes.length}`}
+                <span className={cn('hidden sm:flex')}>Question</span>
+                {` ${currentQuizIndex + 1} / ${quizzes.length}`}
               </SelectTrigger>
 
               <SelectContent align='end'>
                 <ScrollArea type='always' className={cn(``, { 'h-[200px] pr-3': quizzes.length > 5 })}>
                   <div className='flex flex-col'>
-                    {quizzes.map((quiz, index) => (
+                    {quizzes.map((quiz, quizIdx) => (
                       <Button
-                        key={index}
+                        key={quizIdx}
                         variant='ghost'
-                        onClick={handleJumpToQuestion(index)}
+                        onClick={handleJumpToQuestion(quizIdx)}
                         className={cn(`gap-2`, {
                           'text-muted-foreground': (quiz.selectedAnswers?.length ?? 0) > 0,
                         })}
                       >
                         {quiz.selectedAnswers?.length ? <CheckboxChecked /> : <CheckboxEmpty />}
-                        <span className='w-full text-left'>Question {index + 1}</span>
+                        <span className='w-full text-left'>Question {quizIdx + 1}</span>
                       </Button>
                     ))}
                   </div>
@@ -128,22 +132,18 @@ const DemoPrompt = () => {
           </div>
         </Card>
 
-        <div
-          className={cn(`flex flex-col gap-4`, {
-            'pointer-events-none opacity-20': isLoading,
-          })}
-        >
+        <div className={cn(`flex flex-col gap-4`, { 'pointer-events-none opacity-20': isLoading })}>
           {choices.map(choice => (
             <Button
-              key={choice}
+              key={choice.id}
               variant='secondary'
-              onClick={() => handleSelect(choice)}
-              className={cn(`h-12 gap-2 sm:h-20`, {
-                'ring-offset ring-2 ring-primary/50': selectedAnswers?.includes(choice),
+              onClick={() => handleSelect(currentQuizIndex, choice.choice)}
+              className={cn(`h-max min-h-[33px] gap-2 sm:min-h-[52px]`, {
+                'ring-offset ring-2 ring-primary/50': selectedAnswers?.includes(choice.choice),
               })}
             >
-              {selectedAnswers?.includes(choice) ? <CheckboxChecked /> : <CheckboxEmpty />}
-              <span className='w-full text-left'>{choice}</span>
+              {selectedAnswers?.includes(choice.choice) ? <CheckboxChecked /> : <CheckboxEmpty />}
+              <span className='w-full text-left'>{choice.choice}</span>
             </Button>
           ))}
         </div>
@@ -152,7 +152,7 @@ const DemoPrompt = () => {
           <Button
             disabled={isLoading || isFirstQuestion}
             onClick={handleNavigateBackward}
-            className='col-span-2 bg-primary/80'
+            className='col-span-2 bg-primary'
           >
             <ArrowLeft className={cn(``, { 'fill-muted-foreground': isLoading || isFirstQuestion })} />
           </Button>
@@ -160,7 +160,7 @@ const DemoPrompt = () => {
           <Button
             disabled={isLoading || isLastQuestion}
             onClick={handleNavigateForward}
-            className='col-span-2 bg-primary/80'
+            className='col-span-2 bg-primary'
           >
             <ArrowRight className={cn(``, { 'fill-muted-foreground': isLoading || isLastQuestion })} />
           </Button>

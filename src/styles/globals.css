@@ -96,3 +96,10 @@
 .text-balance {
     text-wrap: balance;
 }
+
+.editable:empty:before {
+    content: attr(data-placeholder);
+    color: hsl(var(--muted-foreground));
+    opacity: 75%;
+    pointer-events: none;
+}

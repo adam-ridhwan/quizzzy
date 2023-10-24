@@ -2,9 +2,9 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import CheckboxGrid from '@/icons/checkbox-grid';
+import H4 from '@/typography/h4';
 
-import CheckboxGrid from '@/components/ui/icons/checkbox-grid';
-import H4 from '@/components/ui/typography/h4';
 import ThemeButton from '@/components/theme-button';
 
 const Header = () => {

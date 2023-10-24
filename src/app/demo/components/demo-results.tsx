@@ -1,4 +1,12 @@
 import { Fragment } from 'react';
+import ArrowCircle from '@/icons/arrow-circle';
+import CheckboxChecked from '@/icons/checkbox-checked';
+import CheckboxEmpty from '@/icons/checkbox-empty';
+import CircleError from '@/icons/circle-error';
+import CircleSuccess from '@/icons/circle-success';
+import H1 from '@/typography/h1';
+import H2 from '@/typography/h2';
+import H3 from '@/typography/h3';
 import { useEffectOnce } from 'usehooks-ts';
 
 import { Choices } from '@/types/quiz-types';
@@ -7,15 +15,7 @@ import useQuiz from '@/hooks/use-quiz';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import ArrowCircle from '@/components/ui/icons/arrow-circle';
-import CheckboxChecked from '@/components/ui/icons/checkbox-checked';
-import CheckboxEmpty from '@/components/ui/icons/checkbox-empty';
-import CircleError from '@/components/ui/icons/circle-error';
-import CircleSuccess from '@/components/ui/icons/circle-success';
 import { Separator } from '@/components/ui/separator';
-import H1 from '@/components/ui/typography/h1';
-import H2 from '@/components/ui/typography/h2';
-import H3 from '@/components/ui/typography/h3';
 
 const CORRECT_ANSWER = true;
 const WRONG_ANSWER = false;
@@ -25,7 +25,7 @@ type Evaluation = typeof CORRECT_ANSWER | typeof WRONG_ANSWER;
 const DemoResults = () => {
   const { quizzes, score, handleReset } = useQuiz();
 
-  const checkAnswers = (correctAnswers: Choices, selectedAnswers: Choices) => {
+  const checkAnswers = (correctAnswers: string[], selectedAnswers: string[]) => {
     const renderEvaluation = (evaluation: Evaluation, message: string) => {
       const Icon = evaluation ? CircleSuccess : CircleError;
       const textColor = evaluation ? 'text-tc-success' : 'text-tc-destructive';
@@ -93,7 +93,7 @@ const DemoResults = () => {
 
         <div className='flex flex-col gap-4'>
           {quizzes.map(quiz => {
-            const { question, correctAnswers, choices } = quiz;
+            const { question, choices } = quiz;
             const selectedAnswers = quiz.selectedAnswers ?? [];
 
             return (
@@ -102,29 +102,34 @@ const DemoResults = () => {
 
                 <div className='flex flex-col gap-4'>
                   <Badge variant='outline' className='w-max'>
-                    {correctAnswers.length > 1 ? 'Multiple response' : 'Single response'}
+                    {choices.filter(choice => choice.isCorrect).length
+                      ? 'Multiple response'
+                      : 'Single response'}
                   </Badge>
 
                   <H2>{question}</H2>
 
-                  {checkAnswers(correctAnswers, selectedAnswers)}
+                  {checkAnswers(
+                    quiz.choices.filter(choices => choices.isCorrect).map(choice => choice.choice),
+                    selectedAnswers
+                  )}
 
                   {choices.map(choice => {
-                    const isSelected = selectedAnswers.includes(choice);
-                    const isCorrect = correctAnswers.includes(choice);
+                    const isSelected = selectedAnswers.includes(choice.choice);
+                    const isCorrect = choice.isCorrect;
 
                     return (
                       <div
-                        key={choice}
+                        key={choice.id}
                         className={cn(
-                          `inline-flex h-9 items-center justify-center gap-2 rounded-md bg-secondary px-4 
+                          `min-h-9 inline-flex h-max items-center justify-center gap-2 rounded-md bg-secondary px-4 
                           py-2 text-sm font-medium text-secondary-foreground shadow-sm`,
                           { 'bg-success': isSelected && isCorrect },
                           { 'bg-destructive': isSelected && !isCorrect }
                         )}
                       >
-                        {selectedAnswers.includes(choice) ? <CheckboxChecked /> : <CheckboxEmpty />}
-                        <span className='w-full text-left'>{choice}</span>
+                        {selectedAnswers?.includes(choice.choice) ? <CheckboxChecked /> : <CheckboxEmpty />}
+                        <span className='w-full text-left'>{choice.choice}</span>
                       </div>
                     );
                   })}
