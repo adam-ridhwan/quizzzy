@@ -22,7 +22,6 @@ export default function QuizBuilder() {
   const {
     draftQuizzes,
     setDraftQuizzes,
-    addDraftQuiz,
     handleQuestionChange,
     handleCheckBoxChange,
     handleChoiceChange,
