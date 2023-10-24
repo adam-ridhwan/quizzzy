@@ -1,3 +1,5 @@
+import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import ArrowRight from '@/icons/arrow-right';
 import CheckboxGrid from '@/icons/checkbox-grid';
@@ -6,8 +8,9 @@ import H3 from '@/typography/h3';
 
 export default function Home() {
   return (
-    <main className='flex flex-1 flex-col items-center justify-center gap-4 pb-20 text-center'>
-      <CheckboxGrid className='mb-4 h-28 w-28' />
+    <main className='flex flex-1 flex-col items-center  gap-4 pt-20 text-center'>
+      <Image src='/bear-surprise.png' alt='empty' width={500} height={500} className='mb-8 rounded-lg' />
+
       <H1 className='text-balance'>No More Frills,</H1>
       <H1 className='text-balance'>Just Thrilling Quizzes</H1>
       <H3 className='text-balance mb-4 text-muted-foreground'>Quizzing with no fuss.</H3>

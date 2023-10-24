@@ -6,18 +6,19 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Quiz } from '@/types/quiz-types';
 
-const NEW_QUIZ: Quiz = {
-  _id: uuidv4(),
-  question: '',
-  choices: [
-    { id: uuidv4(), choice: '', isCorrect: false },
-    { id: uuidv4(), choice: '', isCorrect: false },
-    { id: uuidv4(), choice: '', isCorrect: false },
-    { id: uuidv4(), choice: '', isCorrect: false },
-  ],
+const NEW_QUIZ = (quiz?: Quiz) => {
+  return {
+    id: uuidv4(),
+    question: quiz?.question || '',
+    choices: Array.from({ length: 4 }, (_, index) => ({
+      id: uuidv4(),
+      choice: quiz?.choices[index].choice || '',
+      isCorrect: quiz?.choices[index].isCorrect || false,
+    })),
+  };
 };
 
-const draftQuizzesAtom = atomWithStorage<Quiz[]>('new quiz', [structuredClone(NEW_QUIZ)]);
+const draftQuizzesAtom = atomWithStorage<Quiz[]>('new quiz', []);
 
 export const useQuizBuilder = () => {
   const [draftQuizzes, setDraftQuizzes] = useAtom(draftQuizzesAtom);
@@ -25,65 +26,76 @@ export const useQuizBuilder = () => {
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
    *  ADD DRAFT QUIZ
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
-  const addDraftQuiz = () => {
-    setDraftQuizzes([...draftQuizzes, structuredClone(NEW_QUIZ)]);
-  };
+  const addDraftQuiz = () => setDraftQuizzes([...draftQuizzes, NEW_QUIZ()]);
 
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
    * RESET DRAFT QUIZ
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
-  const resetDraftQuiz = () => {
-    setDraftQuizzes([structuredClone(NEW_QUIZ)]);
-  };
+  const resetDraftQuiz = () => setDraftQuizzes([]);
 
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
    * DELETE DRAFT QUIZ
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
-  const deleteDraftQuiz = (index: number | null) => {
+  const deleteDraftQuiz = (quizId: string | null) => {
     const newQuizzes = [...draftQuizzes];
-    if (index === null) return;
+    if (quizId === null) return;
 
-    newQuizzes.splice(index, 1);
+    const quizIndex = newQuizzes.findIndex(quiz => quiz.id === quizId);
+
+    newQuizzes.splice(quizIndex, 1);
     setDraftQuizzes(newQuizzes);
   };
 
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
    * DUPLICATE DRAFT QUIZ
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
-  const duplicateDraftQuiz = (index: number) => {
-    setDraftQuizzes(prev => [
-      ...prev.slice(0, index + 1),
-      structuredClone(draftQuizzes[index]),
-      ...prev.slice(index + 1),
-    ]);
+  const duplicateDraftQuiz = (id: string) => {
+    const quizzesCopy = [...draftQuizzes];
+
+    const quizIndex = quizzesCopy.findIndex(quiz => quiz.id === id);
+
+    const duplicatedQuiz = structuredClone(NEW_QUIZ(quizzesCopy[quizIndex]));
+
+    setDraftQuizzes(prev => [...prev.slice(0, quizIndex + 1), duplicatedQuiz, ...prev.slice(quizIndex + 1)]);
   };
 
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
    * HANDLES QUESTION CHANGE
    * @param e - Content editable event.
-   * @param quizIdx - The index of the quiz.
+   * @param id - The index of the quiz.
    * @summary
    * Handles the change of the choice text.
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
-  const handleQuestionChange = (e: ContentEditableEvent, quizIdx: number) => {
+  const handleQuestionChange = (e: ContentEditableEvent, id: string) => {
     const quizzesCopy = [...draftQuizzes];
-    quizzesCopy[quizIdx].question = e.currentTarget.innerText;
+
+    const quizIndex = quizzesCopy.findIndex(quiz => quiz.id === id);
+
+    if (quizIndex === -1) return;
+
+    quizzesCopy[quizIndex].question = e.currentTarget.innerText;
     setDraftQuizzes(quizzesCopy);
   };
 
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
    * HANDLES CHOICE CHANGE
    * @param e - Content editable event.
-   * @param quizIdx - The index of the quiz.
-   * @param choiceIdx - The index of the choice.
+   * @param quizId - The index of the quiz.
+   * @param choiceId - The index of the choice.
    * @summary
    * Handles the change of the choice text.
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
-  const handleChoiceChange = (e: ContentEditableEvent, quizIdx: number, choiceIdx: number) => {
+  const handleChoiceChange = (e: ContentEditableEvent, quizId: string, choiceId: string) => {
     const draftQuizzesCopy = [...draftQuizzes];
 
-    const currentQuiz = draftQuizzesCopy[quizIdx];
-    const currentChoice = currentQuiz.choices[choiceIdx];
+    const quizIndex = draftQuizzesCopy.findIndex(quiz => quiz.id === quizId);
+    if (quizIndex === -1) return;
+
+    const currentQuiz = draftQuizzesCopy[quizIndex];
+    const choiceIndex = currentQuiz.choices.findIndex(choice => choice.id === choiceId);
+    if (choiceIndex === -1) return;
+
+    const currentChoice = currentQuiz.choices[choiceIndex];
     currentChoice.choice = e.currentTarget.innerText;
 
     setDraftQuizzes(draftQuizzesCopy);
@@ -91,16 +103,27 @@ export const useQuizBuilder = () => {
 
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
    * HANDLES CHECKBOX CHANGE
-   * @param quizIdx - The index of the quiz.
-   * @param choiceIdx - The index of the choice.
+   * @param quizId - The id of the quiz.
+   * @param choiceId - The id of the choice.
    * @summary
    * Handles the change of the checkbox.
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
-  const handleCheckBoxChange = (quizIdx: number, choiceIdx: number) => {
+  const handleCheckBoxChange = (quizId: string, choiceId: string) => {
     const draftQuizzesCopy = [...draftQuizzes];
 
-    const currentQuiz = draftQuizzesCopy[quizIdx];
-    const currentChoice = currentQuiz.choices[choiceIdx];
+    const quizIndex = draftQuizzesCopy.findIndex(quiz => quiz.id === quizId);
+
+    if (quizIndex === -1) return;
+
+    const currentQuiz = draftQuizzesCopy[quizIndex];
+
+    // Find the index of the choice with the specified choiceId
+    const choiceIndex = currentQuiz.choices.findIndex(choice => choice.id === choiceId);
+
+    // Check if the choice with the specified choiceId was found
+    if (choiceIndex === -1) return;
+
+    const currentChoice = currentQuiz.choices[choiceIndex];
     currentChoice.isCorrect = !currentChoice.isCorrect;
 
     setDraftQuizzes(draftQuizzesCopy);

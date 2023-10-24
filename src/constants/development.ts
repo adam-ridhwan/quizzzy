@@ -4,7 +4,7 @@ import { QuizzesWithSelectedAnswers } from '@/types/quiz-types';
 
 export const QUIZZES: QuizzesWithSelectedAnswers[] = [
   {
-    _id: '1',
+    id: uuidv4(),
     question: 'What is the best programming language?',
     choices: [
       { id: uuidv4(), choice: 'Java', isCorrect: false },
@@ -14,7 +14,7 @@ export const QUIZZES: QuizzesWithSelectedAnswers[] = [
     ],
   },
   {
-    _id: '2',
+    id: uuidv4(),
     question: 'Which language is primarily used for iOS development?',
     choices: [
       { id: uuidv4(), choice: 'Java', isCorrect: false },
@@ -24,7 +24,7 @@ export const QUIZZES: QuizzesWithSelectedAnswers[] = [
     ],
   },
   {
-    _id: '3',
+    id: uuidv4(),
     question: 'Which database system is based on SQL and primarily used for relational databases?',
     choices: [
       { id: uuidv4(), choice: 'MongoDB', isCorrect: false },
@@ -34,7 +34,7 @@ export const QUIZZES: QuizzesWithSelectedAnswers[] = [
     ],
   },
   {
-    _id: '4',
+    id: uuidv4(),
     question: 'Which of the following is not a front-end framework?',
     choices: [
       { id: uuidv4(), choice: 'React', isCorrect: false },
@@ -44,7 +44,7 @@ export const QUIZZES: QuizzesWithSelectedAnswers[] = [
     ],
   },
   {
-    _id: '5',
+    id: uuidv4(),
     question: 'Which tool is commonly used for version control in software development?',
     choices: [
       { id: uuidv4(), choice: 'Git', isCorrect: true },
@@ -54,7 +54,7 @@ export const QUIZZES: QuizzesWithSelectedAnswers[] = [
     ],
   },
   {
-    _id: '6',
+    id: uuidv4(),
     question: 'Which protocol is commonly used for secure web traffic?',
     choices: [
       { id: uuidv4(), choice: 'HTTP', isCorrect: false },
@@ -64,7 +64,7 @@ export const QUIZZES: QuizzesWithSelectedAnswers[] = [
     ],
   },
   {
-    _id: '7',
+    id: uuidv4(),
     question: 'Which language is used for styling web content?',
     choices: [
       { id: uuidv4(), choice: 'HTML', isCorrect: false },
@@ -74,7 +74,7 @@ export const QUIZZES: QuizzesWithSelectedAnswers[] = [
     ],
   },
   {
-    _id: '8',
+    id: uuidv4(),
     question:
       'Which of the following is a popular JavaScript runtime built on Chrome’s V8 JavaScript engine?',
     choices: [
@@ -85,7 +85,7 @@ export const QUIZZES: QuizzesWithSelectedAnswers[] = [
     ],
   },
   {
-    _id: '9',
+    id: uuidv4(),
     question: 'Which of the following is not a JavaScript framework or library?',
     choices: [
       { id: uuidv4(), choice: 'React', isCorrect: false },
@@ -95,7 +95,7 @@ export const QUIZZES: QuizzesWithSelectedAnswers[] = [
     ],
   },
   {
-    _id: '10',
+    id: uuidv4(),
     question: 'Which data format is commonly used for asynchronous browser/server communication?',
     choices: [
       { id: uuidv4(), choice: 'XML', isCorrect: false },

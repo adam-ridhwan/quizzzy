@@ -1,19 +1,19 @@
-import H2 from '@/typography/h2';
-
-import QuizBuilder from '@/app/quiz-builder/components/quiz-builder';
-import QuizBuilderSettings from '@/app/quiz-builder/components/quiz-builder-settings';
+import { AddQuizButton } from '@/app/quiz-builder/components/buttons/add-quiz-button';
+import { PublishQuizButton } from '@/app/quiz-builder/components/buttons/publish-button';
+import { ResetQuizButton } from '@/app/quiz-builder/components/buttons/reset-quiz-button';
+import QuizBuilder from '@/app/quiz-builder/quiz-builder';
 
 const QuizBuilderPage = () => {
   return (
     <>
-      <div className='mt-5 flex flex-col gap-8'>
-        <div className='flex flex-row items-center justify-between'>
-          <H2>Quiz builder</H2>
-
-          <QuizBuilderSettings />
+      <div className='mb-16 mt-5 flex flex-col gap-8'>
+        <div className='flew-row flex items-center justify-end gap-2'>
+          <ResetQuizButton />
+          <PublishQuizButton />
         </div>
 
         <QuizBuilder />
+        <AddQuizButton />
       </div>
     </>
   );

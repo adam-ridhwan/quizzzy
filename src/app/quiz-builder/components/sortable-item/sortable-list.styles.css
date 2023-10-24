@@ -1,0 +1,18 @@
+.SortableItem {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    align-items: center;
+    background-color: transparent;
+    box-sizing: border-box;
+    list-style: none;
+    color: #333;
+    font-weight: 400;
+    font-size: 1rem;
+    font-family: sans-serif;
+}
+
+.DragHandle {
+    touch-action: none;
+    cursor: var(--cursor, pointer);
+}

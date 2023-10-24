@@ -13,7 +13,7 @@ const ChoicesSchema = z
 export type Choices = z.infer<typeof ChoicesSchema>;
 
 const QuizSchema = z.object({
-  _id: z.string(),
+  id: z.string(),
   question: QuestionSchema,
   choices: ChoicesSchema,
 });
