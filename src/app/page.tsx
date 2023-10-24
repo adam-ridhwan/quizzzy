@@ -8,7 +8,7 @@ import H3 from '@/typography/h3';
 
 export default function Home() {
   return (
-    <main className='flex flex-1 flex-col items-center  gap-4 pt-20 text-center'>
+    <main className='flex flex-1 flex-col items-center gap-4 pt-20 text-center'>
       <Image src='/bear-surprise.png' alt='empty' width={500} height={500} className='mb-8 rounded-lg' />
 
       <H1 className='text-balance'>No More Frills,</H1>
