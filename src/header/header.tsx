@@ -16,7 +16,7 @@ const Header = () => {
         <div className='flex flex-1 items-center gap-2'>
           <Link href='/' className='flex flex-row items-center gap-2 text-lg font-bold'>
             <CheckboxGrid />
-            <span className='hidden sm:flex'>Quizzzy</span>
+            <span className=''>Quizzzy</span>
           </Link>
         </div>
 

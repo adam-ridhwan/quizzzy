@@ -8,12 +8,17 @@ import H3 from '@/typography/h3';
 
 export default function Home() {
   return (
-    <main className='flex flex-1 flex-col items-center gap-4 pt-20 text-center'>
-      <Image src='/bear-surprise.png' alt='empty' width={500} height={500} className='mb-8 rounded-lg' />
+    <main className='flex flex-col items-center gap-4 pt-4 text-center'>
+      <Image
+        src='/bear-surprise.png'
+        alt='empty'
+        width={500}
+        height={500}
+        className='mb-2 rounded-lg sm:mb-12 sm:mt-20'
+      />
 
-      <H1 className='text-balance'>No More Frills,</H1>
-      <H1 className='text-balance'>Just Thrilling Quizzes</H1>
-      <H3 className='text-balance mb-4 text-muted-foreground'>Quizzing with no fuss.</H3>
+      <H1 className='text-balance'>Quizzing made EZ</H1>
+      <H3 className='text-balance mb-4 text-muted-foreground '>Quizzing with no fuss</H3>
 
       <div className='flex flex-row items-center gap-2'>
         <Link
