@@ -1,24 +1,27 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import CheckboxChecked from '@/icons/checkbox-checked';
 import CheckboxEmpty from '@/icons/checkbox-empty';
 import { Copy } from '@/icons/copy';
+import { useAtomValue } from 'jotai';
 import ContentEditable from 'react-contenteditable';
+import { useEffectOnce } from 'usehooks-ts';
 
 import { cn } from '@/lib/utils';
 import { useQuizBuilder } from '@/hooks/use-quiz-builder';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { DeleteQuestionButton } from '@/app/quiz-builder/components/buttons/delete-question-button';
-import { SortableList } from '@/app/quiz-builder/components/sortable-list/sortable-list';
+import { activeAtom, SortableList } from '@/app/quiz-builder/components/sortable-list/sortable-list';
 
 function getMockItems() {
   return [...new Array(30)].map((_, index) => ({ id: index + 1 }));
 }
 
 export default function QuizBuilder() {
+  const active = useAtomValue(activeAtom);
   const {
     draftQuizzes,
     setDraftQuizzes,
@@ -45,7 +48,11 @@ export default function QuizBuilder() {
           return (
             <>
               <SortableList.Item id={draftQuiz.id}>
-                <Card className='flex w-full flex-row'>
+                <Card
+                  className={cn('flex min-h-fit w-full flex-row', {
+                    'shadow-lg': draftQuiz.id === active?.id,
+                  })}
+                >
                   <div className='flex flex-1 flex-col'>
                     <CardHeader className='flex-row items-center gap-2 space-y-0'>
                       <div className='flex aspect-square h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground'>
