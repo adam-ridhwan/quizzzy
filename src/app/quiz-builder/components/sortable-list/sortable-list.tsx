@@ -20,7 +20,6 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { atom, useAtom } from 'jotai';
 
 import { DragHandle, SortableItem } from '@/app/quiz-builder/components/sortable-item/sortable-item';
-import { SortableOverlay } from '@/app/quiz-builder/components/sortable-overlay/sortable-overlay';
 
 interface BaseItem {
   id: UniqueIdentifier;

@@ -16,10 +16,6 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { DeleteQuestionButton } from '@/app/quiz-builder/components/buttons/delete-question-button';
 import { activeAtom, SortableList } from '@/app/quiz-builder/components/sortable-list/sortable-list';
 
-function getMockItems() {
-  return [...new Array(30)].map((_, index) => ({ id: index + 1 }));
-}
-
 export default function QuizBuilder() {
   const active = useAtomValue(activeAtom);
   const {
