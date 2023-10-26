@@ -13,6 +13,7 @@ const QuizBuilderPage = () => {
         </div>
 
         <QuizBuilder />
+
         <AddQuizButton />
       </div>
     </>

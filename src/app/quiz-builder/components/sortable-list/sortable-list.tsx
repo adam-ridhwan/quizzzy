@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { ForwardedRef, Ref, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import {
   DndContext,
@@ -19,6 +19,7 @@ import './sortable-list.styles.css';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { atom, useAtom } from 'jotai';
 
+import { useSortableWidth } from '@/hooks/use-sortable-width';
 import { DragHandle, SortableItem } from '@/app/quiz-builder/components/sortable-item/sortable-item';
 
 interface BaseItem {
@@ -35,6 +36,9 @@ export const activeAtom = atom<Active | null>(null);
 
 export function SortableList<T extends BaseItem>({ items, onChange, renderItem }: Props<T>) {
   const [active, setActive] = useAtom(activeAtom);
+  const sortableListRef = useRef<HTMLUListElement>(null);
+
+  useSortableWidth(sortableListRef);
 
   const activeItem = useMemo(() => items.find(item => item.id === active?.id), [active, items]);
 
@@ -78,7 +82,7 @@ export function SortableList<T extends BaseItem>({ items, onChange, renderItem }
       modifiers={[restrictToVerticalAxis]}
     >
       <SortableContext items={items} strategy={disableSortingStrategy}>
-        <ul className='SortableList' role='application'>
+        <ul ref={sortableListRef} className='flex flex-col gap-12' role='application'>
           {items.map(item => (
             <React.Fragment key={item.id}>{renderItem(item)}</React.Fragment>
           ))}

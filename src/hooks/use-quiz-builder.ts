@@ -27,6 +27,16 @@ export const useQuizBuilder = () => {
    *  ADD DRAFT QUIZ
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
   const addDraftQuiz = () => setDraftQuizzes([...draftQuizzes, NEW_QUIZ()]);
+  const addDraftQuizBelowId = (quizId: string) => {
+    const newQuizzes = [...draftQuizzes];
+    if (quizId === null) return;
+
+    const quizIndex = newQuizzes.findIndex(quiz => quiz.id === quizId);
+
+    const newQuiz = structuredClone(NEW_QUIZ());
+
+    setDraftQuizzes(prev => [...prev.slice(0, quizIndex + 1), newQuiz, ...prev.slice(quizIndex + 1)]);
+  };
 
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
    * RESET DRAFT QUIZ
@@ -133,6 +143,7 @@ export const useQuizBuilder = () => {
     draftQuizzes,
     setDraftQuizzes,
     addDraftQuiz,
+    addDraftQuizBelowId,
     resetDraftQuiz,
     deleteDraftQuiz,
     duplicateDraftQuiz,
