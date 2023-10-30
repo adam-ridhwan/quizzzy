@@ -15,6 +15,7 @@ import { useQuizBuilder } from '@/hooks/use-quiz-builder';
 import { widthAtom } from '@/hooks/use-sortable-width';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
 import { AddQuizButton } from '@/app/quiz-builder/components/buttons/add-quiz-button';
 import { DeleteQuestionButton } from '@/app/quiz-builder/components/buttons/delete-question-button';
@@ -48,6 +49,7 @@ export default function QuizBuilder() {
       <>
         <div className='flex w-full items-center justify-center'>
           <Image
+            priority
             src='/bear-empty.png'
             alt='empty'
             width={500}
@@ -55,8 +57,6 @@ export default function QuizBuilder() {
             className='rounded-lg border-4 border-muted-foreground'
           />
         </div>
-
-        <AddQuizButton />
       </>
     );
   }
@@ -72,11 +72,7 @@ export default function QuizBuilder() {
           return (
             <>
               <SortableList.Item id={draftQuiz.id}>
-                <Card
-                  className={cn('flex w-full ', {
-                    'shadow-2xl': draftQuiz.id === active?.id,
-                  })}
-                >
+                <Card className={cn('flex w-full', { 'shadow-2xl': draftQuiz.id === active?.id })}>
                   <div className='flex flex-1 flex-col'>
                     <CardHeader className='flex-row items-center justify-between gap-2 space-y-0 py-3'>
                       <span className='text-lg text-muted-foreground'>{`Question ${
@@ -113,7 +109,7 @@ export default function QuizBuilder() {
                             key={choiceIdx}
                             className={cn(
                               `flex flex-row items-center gap-2 rounded-md bg-secondary px-4 py-2 
-                          text-secondary-foreground shadow-sm hover:bg-secondary/80`
+                              text-secondary-foreground shadow-sm hover:bg-secondary/80`
                             )}
                           >
                             <button onClick={() => handleCheckBoxChange(draftQuiz.id, choice.id)}>

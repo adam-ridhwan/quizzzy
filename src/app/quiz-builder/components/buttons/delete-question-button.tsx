@@ -13,6 +13,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 type Props = {
   quizId: string;
@@ -30,29 +31,34 @@ export const DeleteQuestionButton = ({ quizId }: Props) => {
 
   return (
     <>
-      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure you want to delete this question?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the question.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction asChild>
-              <Button variant='destructive' onClick={() => deleteDraftQuiz(questionToDelete.current)}>
-                Continue
-              </Button>
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <Popover open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <PopoverTrigger asChild>
+          <Button variant='outline' size='icon' onClick={() => handleOpenDeleteDialog(quizId)}>
+            <span className='sr-only'>Delete</span>
+            <Trash />
+          </Button>
+        </PopoverTrigger>
 
-      <Button variant='outline' size='icon' onClick={() => handleOpenDeleteDialog(quizId)}>
-        <span className='sr-only'>Delete</span>
-        <Trash />
-      </Button>
+        <PopoverContent sticky='always' className='mx-2 flex flex-col gap-6'>
+          <div className='flex flex-row items-center gap-4'>
+            <div className='min-h-16 min-w-16 rounded-full bg-secondary p-3'>
+              <Trash className='h-7 w-7' />
+            </div>
+            <div>
+              <span>Are you sure you want to delete this question?</span>
+            </div>
+          </div>
+
+          <div className='flex flex-row items-center justify-end gap-2'>
+            <Button variant='outline' size='sm' onClick={() => setIsDeleteDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button size='sm' onClick={() => deleteDraftQuiz(questionToDelete.current)}>
+              Delete
+            </Button>
+          </div>
+        </PopoverContent>
+      </Popover>
     </>
   );
 };

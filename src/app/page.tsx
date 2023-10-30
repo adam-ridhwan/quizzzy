@@ -14,6 +14,7 @@ export default function Home() {
         alt='empty'
         width={500}
         height={500}
+        priority
         className='mb-2 rounded-lg sm:mb-12 sm:mt-20'
       />
 
