@@ -73,13 +73,13 @@ const DemoResults = () => {
           <CardHeader>
             <H1>Quiz complete!</H1>
             <H3 className='font-medium text-muted-foreground'>
-              {`You answered ${score} out of ${quizzes.length} correct`}
+              {`You answered ${score} out of ${quizzes.quizzes.length} correct`}
             </H3>
           </CardHeader>
 
           <CardContent className='flex justify-center'>
             <div className='flex aspect-square w-32 items-center justify-center rounded-lg border-4 border-border'>
-              <span className='text-4xl'>{Math.floor((score / quizzes.length) * 100)}%</span>
+              <span className='text-4xl'>{Math.floor((score / quizzes.quizzes.length) * 100)}%</span>
             </div>
           </CardContent>
 
@@ -92,7 +92,7 @@ const DemoResults = () => {
         </Card>
 
         <div className='flex flex-col gap-4'>
-          {quizzes.map(quiz => {
+          {quizzes.quizzes.map(quiz => {
             const { question, choices } = quiz;
             const selectedAnswers = quiz.selectedAnswers ?? [];
 

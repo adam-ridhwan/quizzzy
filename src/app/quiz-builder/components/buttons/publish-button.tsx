@@ -40,8 +40,9 @@ export const PublishQuizButton = () => {
       return toast.error('All questions must have at least one correct answer.');
 
     const newQuizzes = draftQuizzes.map(quiz => ({ ...quiz, selectedAnswers: [] }));
-    setQuizzes(newQuizzes);
-    router.push('/demo'); // TODO: change to /quiz/[id]
+
+    // setQuizzes(newQuizzes);
+    // router.push('/demo'); // TODO: change to /quiz/[id]
   };
 
   return (

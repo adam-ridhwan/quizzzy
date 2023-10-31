@@ -1,13 +1,16 @@
 import * as z from 'zod';
 
-const QuestionSchema = z
-  .string()
-  .min(1, 'There should be exactly 1 correct answer')
-  .max(4, 'There should be exactly 4 correct answers');
+const QuestionSchema = z.string();
 export type Question = z.infer<typeof QuestionSchema>;
 
+const ChoiceSchema = {
+  id: z.string(),
+  choice: z.string(),
+  isCorrect: z.boolean(),
+};
+
 const ChoicesSchema = z
-  .array(z.object({ id: z.string(), choice: z.string(), isCorrect: z.boolean() }))
+  .array(z.object(ChoiceSchema))
   .min(4, 'There should be exactly 4 choices')
   .max(4, 'There should be exactly 4 choices');
 export type Choices = z.infer<typeof ChoicesSchema>;
@@ -19,6 +22,16 @@ const QuizSchema = z.object({
 });
 export type Quiz = z.infer<typeof QuizSchema>;
 
-export type QuizzesWithSelectedAnswers = {
-  selectedAnswers?: string[];
-} & Quiz;
+const SelectedAnswersSchema = z.array(ChoiceSchema.id);
+
+const QuizWithNoSelectedAnswersSchema = z.object({
+  id: z.string(),
+  quizzes: z.array(QuizSchema),
+});
+export type QuizWithNoSelectedAnswers = z.infer<typeof QuizWithNoSelectedAnswersSchema>;
+
+const QuizzesWithSelectedAnswersSchema = z.object({
+  id: z.string(),
+  quizzes: z.array(QuizSchema.extend({ selectedAnswers: SelectedAnswersSchema })),
+});
+export type QuizzesWithSelectedAnswers = z.infer<typeof QuizzesWithSelectedAnswersSchema>;

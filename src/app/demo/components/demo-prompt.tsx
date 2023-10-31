@@ -46,16 +46,16 @@ const DemoPrompt = () => {
   let choices: Choices = [];
   let selectedAnswers: string[] | undefined = [];
 
-  const currentQuestion = quizzes[currentQuizIndex];
+  const currentQuestion = quizzes.quizzes[currentQuizIndex];
   const isFirstQuestion = currentQuizIndex === 0;
-  const isLastQuestion = currentQuizIndex === quizzes.length - 1;
-  const isQuizFinished = quizzes.every(quiz => (quiz?.selectedAnswers?.length || 0) > 0);
+  const isLastQuestion = currentQuizIndex === quizzes.quizzes.length - 1;
+  const isQuizFinished = quizzes.quizzes.every(quiz => (quiz?.selectedAnswers?.length || 0) > 0);
 
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   if (currentQuestion) {
-    ({ question, choices, selectedAnswers } = quizzes[currentQuizIndex]);
+    ({ question, choices, selectedAnswers } = quizzes.quizzes[currentQuizIndex]);
   }
 
   const handleJumpToQuestion = (index: number) => () => setCurrentQuizIndex(index);
@@ -100,13 +100,16 @@ const DemoPrompt = () => {
             <Select open={isSelectOpen} onOpenChange={setIsSelectOpen}>
               <SelectTrigger className='w-max gap-2 text-sm text-muted-foreground shadow-none focus:ring-0'>
                 <span className={cn('hidden sm:flex')}>Question</span>
-                {` ${currentQuizIndex + 1} / ${quizzes.length}`}
+                {` ${currentQuizIndex + 1} / ${quizzes.quizzes.length}`}
               </SelectTrigger>
 
               <SelectContent align='end'>
-                <ScrollArea type='always' className={cn(``, { 'h-[200px] pr-3': quizzes.length > 5 })}>
+                <ScrollArea
+                  type='always'
+                  className={cn(``, { 'h-[200px] pr-3': quizzes.quizzes.length > 5 })}
+                >
                   <div className='flex flex-col'>
-                    {quizzes.map((quiz, quizIdx) => (
+                    {quizzes.quizzes.map((quiz, quizIdx) => (
                       <Button
                         key={quizIdx}
                         variant='ghost'
@@ -148,11 +151,11 @@ const DemoPrompt = () => {
           ))}
         </div>
 
-        <div className='mt-4 grid grid-cols-9 gap-4'>
+        <div className='mt-4 grid grid-cols-12 gap-4'>
           <Button
             disabled={isLoading || isFirstQuestion}
             onClick={handleNavigateBackward}
-            className='col-span-2 bg-primary'
+            className='col-span-2 col-start-5 bg-primary'
           >
             <ArrowLeft className={cn(``, { 'fill-muted-foreground': isLoading || isFirstQuestion })} />
           </Button>
@@ -168,7 +171,7 @@ const DemoPrompt = () => {
           <Button
             disabled={isLoading || !isQuizFinished}
             onClick={handleConfirmSubmission}
-            className={cn('col-span-2 col-end-10', { hidden: !isQuizFinished })}
+            className={cn('col-span-3 col-end-13', { hidden: !isQuizFinished })}
           >
             {isLoading ? <LoadingSpinner /> : 'Submit'}
           </Button>

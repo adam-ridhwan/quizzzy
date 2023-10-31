@@ -34,8 +34,6 @@ export default function QuizBuilder() {
     handleCheckBoxChange,
     handleChoiceChange,
     duplicateDraftQuiz,
-    addDraftQuiz,
-    addDraftQuizBelowId,
   } = useQuizBuilder();
 
   const isDraftQuizzesEmpty = draftQuizzes.length === 0;
@@ -46,18 +44,16 @@ export default function QuizBuilder() {
 
   if (isDraftQuizzesEmpty) {
     return (
-      <>
-        <div className='flex w-full items-center justify-center'>
-          <Image
-            priority
-            src='/bear-empty.png'
-            alt='empty'
-            width={500}
-            height={500}
-            className='rounded-lg border-4 border-muted-foreground'
-          />
-        </div>
-      </>
+      <div className='flex w-full items-center justify-center'>
+        <Image
+          priority
+          src='/bear-empty.png'
+          alt='empty'
+          width={500}
+          height={500}
+          className='rounded-lg border-4 border-muted-foreground'
+        />
+      </div>
     );
   }
 
@@ -67,70 +63,64 @@ export default function QuizBuilder() {
         items={draftQuizzes}
         onChange={setDraftQuizzes}
         renderItem={draftQuiz => {
-          const { question, choices } = draftQuiz;
+          const { id, question, choices } = draftQuiz;
 
           return (
-            <>
-              <SortableList.Item id={draftQuiz.id}>
-                <Card className={cn('flex w-full', { 'shadow-2xl': draftQuiz.id === active?.id })}>
-                  <div className='flex flex-1 flex-col'>
-                    <CardHeader className='flex-row items-center justify-between gap-2 space-y-0 py-3'>
-                      <span className='text-lg text-muted-foreground'>{`Question ${
-                        draftQuizzes.indexOf(draftQuiz) + 1
-                      }`}</span>
+            <SortableList.Item id={id}>
+              <Card className={cn('flex w-full', { 'shadow-2xl': id === active?.id })}>
+                <div className='flex flex-1 flex-col'>
+                  <CardHeader className='flex-row items-center justify-between gap-2 space-y-0 py-3'>
+                    <span className='text-lg text-muted-foreground'>{`Question ${
+                      draftQuizzes.indexOf(draftQuiz) + 1
+                    }`}</span>
 
-                      <div className='flex flex-row items-center gap-2'>
-                        <Button
-                          variant='outline'
-                          size='icon'
-                          onClick={() => duplicateDraftQuiz(draftQuiz.id)}
+                    <div className='flex flex-row items-center gap-2'>
+                      <Button variant='outline' size='icon' onClick={() => duplicateDraftQuiz(id)}>
+                        <span className='sr-only'>Copy</span>
+                        <Copy />
+                      </Button>
+                      <DeleteQuestionButton quizId={id} />
+                      <SortableList.DragHandle />
+                    </div>
+                  </CardHeader>
+
+                  <CardContent className='flex flex-col gap-4'>
+                    <ContentEditable
+                      html={question}
+                      data-placeholder='Enter a question'
+                      onChange={e => handleQuestionChange(e, id)}
+                      tagName='p'
+                      style={{ maxWidth: `${width - PADDING}px` }}
+                      className='editable h-max break-words rounded-sm px-1 text-xl font-semibold tracking-tight focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
+                    />
+
+                    {choices.map((choice, choiceIdx) => {
+                      return (
+                        <div
+                          key={choiceIdx}
+                          className={cn(
+                            `flex flex-row items-center gap-2 rounded-md bg-secondary px-4 py-2 
+                            text-secondary-foreground shadow-sm hover:bg-secondary/80`
+                          )}
                         >
-                          <span className='sr-only'>Copy</span>
-                          <Copy />
-                        </Button>
-                        <DeleteQuestionButton quizId={draftQuiz.id} />
-                        <SortableList.DragHandle />
-                      </div>
-                    </CardHeader>
+                          <button onClick={() => handleCheckBoxChange(id, choice.id)}>
+                            {renderCheckboxLabel(choice.isCorrect)}
+                          </button>
 
-                    <CardContent className='flex flex-col gap-4'>
-                      <ContentEditable
-                        html={question}
-                        data-placeholder='Enter a question'
-                        onChange={e => handleQuestionChange(e, draftQuiz.id)}
-                        tagName='p'
-                        style={{ maxWidth: `${width - PADDING}px` }}
-                        className='editable h-max break-words rounded-sm px-1 text-xl font-semibold tracking-tight focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
-                      />
-
-                      {choices.map((choice, choiceIdx) => {
-                        return (
-                          <div
-                            key={choiceIdx}
-                            className={cn(
-                              `flex flex-row items-center gap-2 rounded-md bg-secondary px-4 py-2 
-                              text-secondary-foreground shadow-sm hover:bg-secondary/80`
-                            )}
-                          >
-                            <button onClick={() => handleCheckBoxChange(draftQuiz.id, choice.id)}>
-                              {renderCheckboxLabel(choice.isCorrect)}
-                            </button>
-
-                            <ContentEditable
-                              html={choice.choice}
-                              data-placeholder={`Choice ${choiceIdx + 1}`}
-                              onChange={e => handleChoiceChange(e, draftQuiz.id, choice.id)}
-                              style={{ maxWidth: `${width - PADDING - 32 - 20 - 8}px` }}
-                              className='editable w-full break-words rounded-sm px-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
-                            />
-                          </div>
-                        );
-                      })}
-                    </CardContent>
-                  </div>
-                </Card>
-              </SortableList.Item>
-            </>
+                          <ContentEditable
+                            html={choice.choice}
+                            data-placeholder={`Choice ${choiceIdx + 1}`}
+                            onChange={e => handleChoiceChange(e, id, choice.id)}
+                            style={{ maxWidth: `${width - PADDING - 32 - 20 - 8}px` }}
+                            className='editable w-full break-words rounded-sm px-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
+                          />
+                        </div>
+                      );
+                    })}
+                  </CardContent>
+                </div>
+              </Card>
+            </SortableList.Item>
           );
         }}
       />

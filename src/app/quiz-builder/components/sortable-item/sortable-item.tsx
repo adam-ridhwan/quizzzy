@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useMemo } from 'react';
 import type { CSSProperties, PropsWithChildren } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import type { Active, DraggableSyntheticListeners, UniqueIdentifier } from '@dnd-kit/core';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -11,7 +11,6 @@ import './sortable-list.styles.css';
 import { useAtomValue } from 'jotai';
 
 import { cn } from '@/lib/utils';
-import { Action } from '@radix-ui/react-alert-dialog';
 import { activeAtom } from '@/app/quiz-builder/components/sortable-list/sortable-list';
 
 interface Props {

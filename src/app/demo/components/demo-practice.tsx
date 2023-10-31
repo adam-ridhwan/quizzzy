@@ -10,7 +10,7 @@ const DemoPractice = () => {
   return (
     <>
       <main className='flex flex-1 justify-center gap-4'>
-        {currentQuizIndex >= quizzes.length ? <DemoResults /> : <DemoPrompt />}
+        {currentQuizIndex >= quizzes.quizzes.length ? <DemoResults /> : <DemoPrompt />}
       </main>
     </>
   );
