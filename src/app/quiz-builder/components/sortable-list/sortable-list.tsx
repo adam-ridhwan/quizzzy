@@ -56,6 +56,8 @@ export function SortableList<T extends BaseItem>({ items, onChange, renderItem }
   function handleDragOver(e: DragOverEvent) {
     const { active, over } = e;
 
+    if (!items) return;
+
     if (over && active.id !== over.id) {
       const activeIndex = items.findIndex(({ id }) => id === active.id);
       const overIndex = items.findIndex(({ id }) => id === over.id);
@@ -83,9 +85,7 @@ export function SortableList<T extends BaseItem>({ items, onChange, renderItem }
     >
       <SortableContext items={items} strategy={disableSortingStrategy}>
         <ul ref={sortableListRef} className='flex flex-col gap-12' role='application'>
-          {items.map(item => (
-            <React.Fragment key={item.id}>{renderItem(item)}</React.Fragment>
-          ))}
+          {items?.map(item => <React.Fragment key={item.id}>{renderItem(item)}</React.Fragment>)}
         </ul>
       </SortableContext>
       <DragOverlay>{activeItem ? renderItem(activeItem) : null}</DragOverlay>

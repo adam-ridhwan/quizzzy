@@ -4,7 +4,7 @@ import { atomWithStorage } from 'jotai/utils';
 import { ContentEditableEvent } from 'react-contenteditable';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Quiz } from '@/types/quiz-types';
+import { Quiz, QuizWithNoSelectedAnswers, QuizzesWithSelectedAnswers } from '@/types/quiz-types';
 
 const NEW_QUIZ = (quiz?: Quiz) => {
   return {
@@ -18,7 +18,10 @@ const NEW_QUIZ = (quiz?: Quiz) => {
   };
 };
 
-const draftQuizzesAtom = atomWithStorage<Quiz[]>('new quiz', []);
+const draftQuizzesAtom = atomWithStorage<QuizWithNoSelectedAnswers>('new quiz', {
+  id: uuidv4(),
+  quizzes: [],
+});
 
 export const useQuizBuilder = () => {
   const [draftQuizzes, setDraftQuizzes] = useAtom(draftQuizzesAtom);
@@ -26,47 +29,70 @@ export const useQuizBuilder = () => {
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
    *  ADD DRAFT QUIZ
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
-  const addDraftQuiz = () => setDraftQuizzes([...draftQuizzes, NEW_QUIZ()]);
-  const addDraftQuizBelowId = (quizId: string) => {
-    const newQuizzes = [...draftQuizzes];
-    if (quizId === null) return;
+  const addDraftQuiz = () => {
+    const draftQuizCopy = { ...draftQuizzes };
+    if (!draftQuizCopy || !draftQuizCopy.quizzes) return;
 
-    const quizIndex = newQuizzes.findIndex(quiz => quiz.id === quizId);
+    draftQuizCopy.quizzes.push(NEW_QUIZ());
 
-    const newQuiz = structuredClone(NEW_QUIZ());
-
-    setDraftQuizzes(prev => [...prev.slice(0, quizIndex + 1), newQuiz, ...prev.slice(quizIndex + 1)]);
+    setDraftQuizzes({
+      ...draftQuizzes,
+      quizzes: draftQuizCopy.quizzes,
+    });
   };
+
+  // const addDraftQuizBelowId = (quizId: string) => {
+  //   const newQuizzes = [...draftQuizzes];
+  //   if (quizId === null) return;
+  //
+  //   const quizIndex = newQuizzes.findIndex(quiz => quiz.id === quizId);
+  //
+  //   const newQuiz = structuredClone(NEW_QUIZ());
+  //
+  //   setDraftQuizzes(prev => [...prev.slice(0, quizIndex + 1), newQuiz, ...prev.slice(quizIndex + 1)]);
+  // };
 
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
    * RESET DRAFT QUIZ
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
-  const resetDraftQuiz = () => setDraftQuizzes([]);
+  const resetDraftQuiz = () =>
+    setDraftQuizzes({
+      ...draftQuizzes,
+      quizzes: [],
+    });
 
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
    * DELETE DRAFT QUIZ
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
   const deleteDraftQuiz = (quizId: string | null) => {
-    const newQuizzes = [...draftQuizzes];
+    const draftQuizzesCopy = { ...draftQuizzes };
     if (quizId === null) return;
 
-    const quizIndex = newQuizzes.findIndex(quiz => quiz.id === quizId);
+    const quizIndex = draftQuizzesCopy.quizzes.findIndex(quiz => quiz.id === quizId);
 
-    newQuizzes.splice(quizIndex, 1);
-    setDraftQuizzes(newQuizzes);
+    draftQuizzesCopy.quizzes.splice(quizIndex, 1);
+    setDraftQuizzes(draftQuizzesCopy);
   };
 
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
    * DUPLICATE DRAFT QUIZ
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
   const duplicateDraftQuiz = (id: string) => {
-    const quizzesCopy = [...draftQuizzes];
+    const draftQuizCopy = { ...draftQuizzes };
+    if (!draftQuizCopy || !draftQuizCopy.quizzes) return;
 
-    const quizIndex = quizzesCopy.findIndex(quiz => quiz.id === id);
+    const quizIndex = draftQuizCopy.quizzes.findIndex(quiz => quiz.id === id);
 
-    const duplicatedQuiz = structuredClone(NEW_QUIZ(quizzesCopy[quizIndex]));
+    const duplicatedQuiz = structuredClone(NEW_QUIZ(draftQuizCopy.quizzes[quizIndex]));
 
-    setDraftQuizzes(prev => [...prev.slice(0, quizIndex + 1), duplicatedQuiz, ...prev.slice(quizIndex + 1)]);
+    setDraftQuizzes({
+      ...draftQuizzes,
+      quizzes: [
+        ...draftQuizzes.quizzes.slice(0, quizIndex + 1),
+        duplicatedQuiz,
+        ...draftQuizzes.quizzes.slice(quizIndex + 1),
+      ],
+    });
   };
 
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -77,14 +103,15 @@ export const useQuizBuilder = () => {
    * Handles the change of the choice text.
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
   const handleQuestionChange = (e: ContentEditableEvent, id: string) => {
-    const quizzesCopy = [...draftQuizzes];
+    const draftQuizCopy = { ...draftQuizzes };
+    if (!draftQuizCopy || !draftQuizCopy.quizzes) return;
 
-    const quizIndex = quizzesCopy.findIndex(quiz => quiz.id === id);
+    const quizIndex = draftQuizCopy.quizzes.findIndex(quiz => quiz.id === id);
 
     if (quizIndex === -1) return;
 
-    quizzesCopy[quizIndex].question = e.currentTarget.innerText;
-    setDraftQuizzes(quizzesCopy);
+    draftQuizCopy.quizzes[quizIndex].question = e.currentTarget.innerText;
+    setDraftQuizzes(draftQuizCopy);
   };
 
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -96,19 +123,20 @@ export const useQuizBuilder = () => {
    * Handles the change of the choice text.
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
   const handleChoiceChange = (e: ContentEditableEvent, quizId: string, choiceId: string) => {
-    const draftQuizzesCopy = [...draftQuizzes];
+    const draftQuizCopy = { ...draftQuizzes };
+    if (!draftQuizCopy || !draftQuizCopy.quizzes) return;
 
-    const quizIndex = draftQuizzesCopy.findIndex(quiz => quiz.id === quizId);
+    const quizIndex = draftQuizCopy.quizzes.findIndex(quiz => quiz.id === quizId);
     if (quizIndex === -1) return;
 
-    const currentQuiz = draftQuizzesCopy[quizIndex];
+    const currentQuiz = draftQuizCopy.quizzes[quizIndex];
     const choiceIndex = currentQuiz.choices.findIndex(choice => choice.id === choiceId);
     if (choiceIndex === -1) return;
 
     const currentChoice = currentQuiz.choices[choiceIndex];
     currentChoice.choice = e.currentTarget.innerText;
 
-    setDraftQuizzes(draftQuizzesCopy);
+    setDraftQuizzes(draftQuizCopy);
   };
 
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -119,13 +147,14 @@ export const useQuizBuilder = () => {
    * Handles the change of the checkbox.
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
   const handleCheckBoxChange = (quizId: string, choiceId: string) => {
-    const draftQuizzesCopy = [...draftQuizzes];
+    const draftQuizzesCopy = { ...draftQuizzes };
+    if (!draftQuizzesCopy || !draftQuizzesCopy.quizzes) return;
 
-    const quizIndex = draftQuizzesCopy.findIndex(quiz => quiz.id === quizId);
+    const quizIndex = draftQuizzesCopy.quizzes.findIndex(quiz => quiz.id === quizId);
 
     if (quizIndex === -1) return;
 
-    const currentQuiz = draftQuizzesCopy[quizIndex];
+    const currentQuiz = draftQuizzesCopy.quizzes[quizIndex];
 
     // Find the index of the choice with the specified choiceId
     const choiceIndex = currentQuiz.choices.findIndex(choice => choice.id === choiceId);
@@ -143,7 +172,7 @@ export const useQuizBuilder = () => {
     draftQuizzes,
     setDraftQuizzes,
     addDraftQuiz,
-    addDraftQuizBelowId,
+    // addDraftQuizBelowId,
     resetDraftQuiz,
     deleteDraftQuiz,
     duplicateDraftQuiz,

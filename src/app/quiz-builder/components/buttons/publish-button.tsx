@@ -26,20 +26,20 @@ export const PublishQuizButton = () => {
   const { setQuizzes } = useQuiz();
   const { draftQuizzes } = useQuizBuilder();
 
-  const isDraftQuizzesEmpty = draftQuizzes.length === 0;
+  const isDraftQuizzesEmpty = draftQuizzes?.quizzes?.length === 0;
 
   const [isPublishDialogOpen, setIsPublishDialogOpen] = useState(false);
   const openPublishDialog = () => setIsPublishDialogOpen(true);
 
   const handleSetNewQuiz = () => {
-    const doAllQuestionsHaveAtLeastOneCorrectAnswer = draftQuizzes.every(quiz =>
+    const doAllQuestionsHaveAtLeastOneCorrectAnswer = draftQuizzes?.quizzes?.every(quiz =>
       quiz.choices.some(choice => choice.isCorrect)
     );
 
     if (!doAllQuestionsHaveAtLeastOneCorrectAnswer)
       return toast.error('All questions must have at least one correct answer.');
 
-    const newQuizzes = draftQuizzes.map(quiz => ({ ...quiz, selectedAnswers: [] }));
+    const newQuizzes = draftQuizzes?.quizzes.map(quiz => ({ ...quiz, selectedAnswers: [] }));
 
     // setQuizzes(newQuizzes);
     // router.push('/demo'); // TODO: change to /quiz/[id]

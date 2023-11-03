@@ -48,7 +48,7 @@ export const ResetQuizButton = () => {
 
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant='outline' size='icon' disabled={draftQuizzes.length === 0}>
+          <Button variant='outline' size='icon' disabled={draftQuizzes?.quizzes?.length === 0}>
             <ThreeDotsVertical />
           </Button>
         </PopoverTrigger>

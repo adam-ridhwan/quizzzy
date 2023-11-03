@@ -36,7 +36,9 @@ export default function QuizBuilder() {
     duplicateDraftQuiz,
   } = useQuizBuilder();
 
-  const isDraftQuizzesEmpty = draftQuizzes.length === 0;
+  const isDraftQuizzesEmpty = draftQuizzes?.quizzes?.length === 0;
+
+  console.log(draftQuizzes);
 
   const renderCheckboxLabel = (isCorrect: boolean) => {
     return isCorrect ? <CheckboxChecked className='h-5 w-5' /> : <CheckboxEmpty className='h-5 w-5' />;
@@ -57,11 +59,20 @@ export default function QuizBuilder() {
     );
   }
 
+  if (!draftQuizzes || !draftQuizzes.quizzes) return;
+
+  const setNewDraftQuizzes = (newQuizzes: []) => {
+    setDraftQuizzes({
+      ...draftQuizzes,
+      quizzes: newQuizzes,
+    });
+  };
+
   return (
     <>
       <SortableList
-        items={draftQuizzes}
-        onChange={setDraftQuizzes}
+        items={draftQuizzes.quizzes}
+        onChange={setNewDraftQuizzes}
         renderItem={draftQuiz => {
           const { id, question, choices } = draftQuiz;
 
@@ -71,7 +82,7 @@ export default function QuizBuilder() {
                 <div className='flex flex-1 flex-col'>
                   <CardHeader className='flex-row items-center justify-between gap-2 space-y-0 py-3'>
                     <span className='text-lg text-muted-foreground'>{`Question ${
-                      draftQuizzes.indexOf(draftQuiz) + 1
+                      draftQuizzes?.quizzes.indexOf(draftQuiz) + 1
                     }`}</span>
 
                     <div className='flex flex-row items-center gap-2'>
@@ -99,7 +110,7 @@ export default function QuizBuilder() {
                         <div
                           key={choiceIdx}
                           className={cn(
-                            `flex flex-row items-center gap-2 rounded-md bg-secondary px-4 py-2 
+                            `flex flex-row items-center gap-2 rounded-md bg-secondary px-4 py-2
                             text-secondary-foreground shadow-sm hover:bg-secondary/80`
                           )}
                         >
