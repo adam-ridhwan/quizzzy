@@ -38,8 +38,6 @@ export default function QuizBuilder() {
 
   const isDraftQuizzesEmpty = draftQuizzes?.quizzes?.length === 0;
 
-  console.log(draftQuizzes);
-
   const renderCheckboxLabel = (isCorrect: boolean) => {
     return isCorrect ? <CheckboxChecked className='h-5 w-5' /> : <CheckboxEmpty className='h-5 w-5' />;
   };
@@ -58,8 +56,6 @@ export default function QuizBuilder() {
       </div>
     );
   }
-
-  if (!draftQuizzes || !draftQuizzes.quizzes) return;
 
   const setNewDraftQuizzes = (newQuizzes: []) => {
     setDraftQuizzes({
