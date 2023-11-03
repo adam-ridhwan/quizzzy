@@ -9,6 +9,7 @@ import { Plus } from '@/icons/plus';
 import H3 from '@/typography/h3';
 import { useAtomValue } from 'jotai';
 import ContentEditable from 'react-contenteditable';
+import { useEffectOnce } from 'usehooks-ts';
 
 import { cn } from '@/lib/utils';
 import { useQuizBuilder } from '@/hooks/use-quiz-builder';
@@ -41,6 +42,13 @@ export default function QuizBuilder() {
   const renderCheckboxLabel = (isCorrect: boolean) => {
     return isCorrect ? <CheckboxChecked className='h-5 w-5' /> : <CheckboxEmpty className='h-5 w-5' />;
   };
+
+  useEffectOnce(() => {
+    setDraftQuizzes({
+      ...draftQuizzes,
+      quizzes: [],
+    });
+  });
 
   if (isDraftQuizzesEmpty) {
     return (
