@@ -43,12 +43,12 @@ export default function QuizBuilder() {
     return isCorrect ? <CheckboxChecked className='h-5 w-5' /> : <CheckboxEmpty className='h-5 w-5' />;
   };
 
-  useEffectOnce(() => {
-    setDraftQuizzes({
-      ...draftQuizzes,
-      quizzes: [],
-    });
-  });
+  // useEffectOnce(() => {
+  //   setDraftQuizzes({
+  //     ...draftQuizzes,
+  //     quizzes: [],
+  //   });
+  // });
 
   if (isDraftQuizzesEmpty) {
     return (
