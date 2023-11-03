@@ -89,8 +89,10 @@ const DemoPrompt = () => {
         >
           <div className='flew-row flex items-center justify-between'>
             <Badge variant='outline' className='flex w-max flex-row gap-1'>
-              {choices.filter(choice => choice.isCorrect).length ? 'Multiple responses' : 'Single response'}
-              {choices.filter(choice => choice.isCorrect).length ? (
+              {choices.filter(choice => choice.isCorrect).length > 1
+                ? 'Multiple responses'
+                : 'Single response'}
+              {choices.filter(choice => choice.isCorrect).length > 1 ? (
                 <CheckboxMultiple />
               ) : (
                 <CheckboxChecked className='h-2 w-2' />
