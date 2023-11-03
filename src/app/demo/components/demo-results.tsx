@@ -93,11 +93,10 @@ const DemoResults = () => {
 
         <div className='flex flex-col gap-4'>
           {quizzes.quizzes.map(quiz => {
-            const { question, choices } = quiz;
-            const selectedAnswers = quiz.selectedAnswers ?? [];
+            const { id, question, choices, selectedAnswers } = quiz;
 
             return (
-              <Fragment key={quiz.id}>
+              <Fragment key={id}>
                 <Separator className='my-8' />
 
                 <div className='flex flex-col gap-4'>
@@ -110,12 +109,12 @@ const DemoResults = () => {
                   <H2>{question}</H2>
 
                   {checkAnswers(
-                    quiz.choices.filter(choices => choices.isCorrect).map(choice => choice.choice),
+                    quiz.choices.filter(choices => choices.isCorrect).map(choice => choice.id),
                     selectedAnswers
                   )}
 
                   {choices.map(choice => {
-                    const isSelected = selectedAnswers.includes(choice.choice);
+                    const isSelected = selectedAnswers.includes(choice.id);
                     const isCorrect = choice.isCorrect;
 
                     return (
@@ -128,7 +127,7 @@ const DemoResults = () => {
                           { 'bg-destructive': isSelected && !isCorrect }
                         )}
                       >
-                        {selectedAnswers?.includes(choice.choice) ? <CheckboxChecked /> : <CheckboxEmpty />}
+                        {selectedAnswers?.includes(choice.id) ? <CheckboxChecked /> : <CheckboxEmpty />}
                         <span className='w-full text-left'>{choice.choice}</span>
                       </div>
                     );

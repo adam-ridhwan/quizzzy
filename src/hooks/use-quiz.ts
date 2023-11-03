@@ -47,7 +47,7 @@ const useQuiz = () => {
   /** ────────────────────────────────────────────────────────────────────────────────────────────────────
    * HANDLE SELECT
    * ────────────────────────────────────────────────────────────────────────────────────────────────── */
-  const handleSelect = (currentQuizIndex: number, choice: string) => {
+  const handleSelect = (currentQuizIndex: number, id: string) => {
     const quizCopy = { ...quizzes };
 
     const currentQuiz = quizCopy.quizzes[currentQuizIndex];
@@ -56,14 +56,14 @@ const useQuiz = () => {
 
     // single response
     if (correctAnswers.length === 1) {
-      currentQuiz.selectedAnswers = [choice];
+      currentQuiz.selectedAnswers = [id];
     }
 
     // multiple response
     if (correctAnswers.length > 1) {
-      currentQuiz.selectedAnswers = selectedAnswers.includes(choice)
-        ? selectedAnswers.filter((item: string) => item !== choice)
-        : [...selectedAnswers, choice];
+      currentQuiz.selectedAnswers = selectedAnswers.includes(id)
+        ? selectedAnswers.filter((item: string) => item !== id)
+        : [...selectedAnswers, id];
     }
 
     setQuizzes(quizCopy);
@@ -92,7 +92,7 @@ const useQuiz = () => {
     let score = 0;
     quizzes.quizzes.forEach(quiz => {
       const selectedAnswers = quiz.selectedAnswers ?? [];
-      const correctAnswers = quiz.choices.filter(choice => choice.isCorrect).map(c => c.choice) ?? [];
+      const correctAnswers = quiz.choices.filter(choice => choice.isCorrect).map(c => c.id) ?? [];
 
       // single response
       if (correctAnswers.length === 1) {

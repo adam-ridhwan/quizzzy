@@ -140,12 +140,12 @@ const DemoPrompt = () => {
             <Button
               key={choice.id}
               variant='secondary'
-              onClick={() => handleSelect(currentQuizIndex, choice.choice)}
+              onClick={() => handleSelect(currentQuizIndex, choice.id)}
               className={cn(`h-max min-h-[33px] gap-2 sm:min-h-[52px]`, {
-                'ring-offset ring-2 ring-primary/50': selectedAnswers?.includes(choice.choice),
+                'ring-offset ring-2 ring-primary/50': selectedAnswers?.includes(choice.id),
               })}
             >
-              {selectedAnswers?.includes(choice.choice) ? <CheckboxChecked /> : <CheckboxEmpty />}
+              {selectedAnswers?.includes(choice.id) ? <CheckboxChecked /> : <CheckboxEmpty />}
               <span className='w-full text-left'>{choice.choice}</span>
             </Button>
           ))}
