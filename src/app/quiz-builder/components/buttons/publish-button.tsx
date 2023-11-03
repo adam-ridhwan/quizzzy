@@ -32,34 +32,48 @@ export const PublishQuizButton = () => {
   const openPublishDialog = () => setIsPublishDialogOpen(true);
 
   const handleSetNewQuiz = () => {
-    const doAllQuestionsHaveAtLeastOneCorrectAnswer = draftQuizzes?.quizzes?.every(quiz =>
-      quiz.choices.some(choice => choice.isCorrect)
-    );
-
-    if (!doAllQuestionsHaveAtLeastOneCorrectAnswer)
-      return toast.error('All questions must have at least one correct answer.');
-
-    const newQuizzes = draftQuizzes?.quizzes.map(quiz => ({ ...quiz, selectedAnswers: [] }));
-
+    // const doAllQuestionsHaveAtLeastOneCorrectAnswer = draftQuizzes?.quizzes?.every(quiz =>
+    //   quiz.choices.some(choice => choice.isCorrect)
+    // );
+    //
+    // if (!doAllQuestionsHaveAtLeastOneCorrectAnswer)
+    //   return toast.error('All questions must have at least one correct answer.');
+    //
+    // const newQuizzes = draftQuizzes?.quizzes.map(quiz => ({ ...quiz, selectedAnswers: [] }));
     // setQuizzes(newQuizzes);
     // router.push('/demo'); // TODO: change to /quiz/[id]
   };
 
   return (
     <>
+      {/*<AlertDialog open={isPublishDialogOpen} onOpenChange={setIsPublishDialogOpen}>*/}
+      {/*  <AlertDialogContent>*/}
+      {/*    <AlertDialogHeader>*/}
+      {/*      <AlertDialogTitle>Are you ready to publish your quiz?</AlertDialogTitle>*/}
+      {/*      <AlertDialogDescription>*/}
+      {/*        Once you publish your quiz, everyone will be able to see it.*/}
+      {/*      </AlertDialogDescription>*/}
+      {/*    </AlertDialogHeader>*/}
+      {/*    <AlertDialogFooter>*/}
+      {/*      <AlertDialogCancel>Cancel</AlertDialogCancel>*/}
+      {/*      <AlertDialogAction onClick={handleSetNewQuiz} className='flex gap-2'>*/}
+      {/*        <span>Publish</span>*/}
+      {/*        <Rocket />*/}
+      {/*      </AlertDialogAction>*/}
+      {/*    </AlertDialogFooter>*/}
+      {/*  </AlertDialogContent>*/}
+      {/*</AlertDialog>*/}
+
       <AlertDialog open={isPublishDialogOpen} onOpenChange={setIsPublishDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you ready to publish your quiz?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Once you publish your quiz, everyone will be able to see it.
-            </AlertDialogDescription>
+            <AlertDialogTitle>Coming soon</AlertDialogTitle>
+            <AlertDialogDescription>Sorry this feature is coming soon</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={handleSetNewQuiz} className='flex gap-2'>
-              <span>Publish</span>
-              <Rocket />
+              <span>Continue</span>
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
